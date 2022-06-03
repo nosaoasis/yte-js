@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.wrapper-class {
+  padding: 1rem;
+  border: 1px solid yellow;
+}
+.editor-class {
+  /* background-color:lightgray; */
+  padding: 1rem;
+  border: 0.5px solid black;
+  max-height: 20rem;
+}
+.toolbar-class {
+  border: 1px solid blue;
+  background-color: blue;
+  /* color: white; */
+}
+
+
+.preview {
+  padding: 1rem;
+  margin-top: 1rem;
+}

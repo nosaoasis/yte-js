@@ -14,6 +14,7 @@ const AdminHome = () => {
     dailyThoughts: 6,
     dailyQuotes: 7,
   });
+  const navigate = useNavigate()
 
   const getContentCount = (contentCountState) => {
     const contentDiv = Object.entries(contentCountState).map(
@@ -35,6 +36,10 @@ const AdminHome = () => {
 
   const contentCountList = getContentCount(contentCount);
 
+  const handleCreatePost = () => {
+    navigate("/admin/posts", {state: {createPost: true}})
+  }
+
   // useEffect(() => {
   //   return
   // }, [])
@@ -52,11 +57,11 @@ const AdminHome = () => {
           {contentCountList}
         </div>
 
-        <Link to="" className="px-4 ml-4">
-          <button className="capitalize p-2 px-4 mt-4 bg-slate-700 text-white">
+        {/* <Link to="/admin/posts" className="px-4 ml-4"> */}
+          <button className="capitalize p-2 px-4 mt-4 ml-8 bg-slate-700 text-white" onClick={handleCreatePost}>
             <i className="far fa-plus-square mr-2"></i>create new post
           </button>
-        </Link>
+        {/* </Link> */}
 
         <div className="grid grid-cols-dashboard-menu gap-5 px-8 mt-4">
           {DashboardGridMenu(adminMenuList)}

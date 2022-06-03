@@ -36,7 +36,6 @@ const getAllPost = () => {
   const allPost = dummyPostValue.map((post) => {
     const { id, post_title, content, author, comments, published } = post;
     return (
-      // <>
         <tr key={id} className="border-black text-sm text-gray-200">
           <td className="bg-gray-700 align-top px-1 font-bold  border-2">
             {post_title}
@@ -73,7 +72,6 @@ const getAllPost = () => {
             </span>
           </td>
         </tr>
-      // </>
     );
   });
   return allPost;

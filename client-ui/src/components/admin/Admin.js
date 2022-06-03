@@ -9,10 +9,10 @@ const Admin = () => {
   return (
     <>
       <div className="flex">
-        <div className="w-2/12 bg-black h-screen pt-4 pl-2">
+        <div className="w-2/12 bg-black min-h-screen pt-4 pl-2">
           <ul>{defaultMenu(adminMenuList)}</ul>
         </div>
-        <div className="w-10/12 w-full">
+        <div className="w-10/12 w-full min-h-screen">
           <Routes>
             <Route index path="" element={<AdminInput />} />
             <Route path="dashboard" element={<AdminHome />} />
