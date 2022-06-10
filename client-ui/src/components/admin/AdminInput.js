@@ -7,11 +7,16 @@ const AdminInput = () => {
   const handleChange = (e) => {
     // const name = e.target.name;
     const value = e.target.value;
+    const inputLength = value.length
+    console.log("inputLength value is ", inputLength)
     setInput(value);
-    axios.post("/api/v1/admin", { input })
-    .then((resp) => {
-      console.log(resp)
-    });
+    if (Number(inputLength) === 8) {
+      console.log("äbc");
+      // axios.post("/api/v1/admin", { input })
+      // .then((resp) => {
+        //   console.log(resp)
+        // });
+      }
   };
 
   return (
