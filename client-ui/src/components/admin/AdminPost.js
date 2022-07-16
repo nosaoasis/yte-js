@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 // import axios from "axios";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
@@ -29,9 +29,9 @@ function AdminPost() {
     EditorState.createEmpty()
   );
 
-  console.log('====================================');
+  console.log("====================================");
   console.log("the converted content is ", convertedContent);
-  console.log('====================================');
+  console.log("====================================");
 
   const handleSearch = async (e) => {
     const name = e.target.name;
@@ -91,6 +91,10 @@ function AdminPost() {
   const handleEditorChange = (state) => {
     setEditorState(state);
     convertContentToHTML();
+    const rawState = JSON.stringify(
+      convertToRaw(editorState.getCurrentContent())
+    );
+    // console.log("rawState value is ", rawState);
   };
 
   const convertContentToHTML = () => {
@@ -146,25 +150,34 @@ function AdminPost() {
           <div className="bg-white pb-2 ml-8 mr-8 mt-4 h-96 overflow-y-scroll z-10 relative">
             <div>
               <table className="">
-                <tr className="sticky top-0 bg-black text-white text-sm">
-                  <th className="w-14 py-2 border-x-white border-2">
-                    Post Title
-                  </th>
-                  <th className="w-14 py-2 border-x-white border-2">Content</th>
-                  <th className="w-14 py-2 border-x-white border-2">Author</th>
-                  <th className="w-14 py-2 border-x-white border-2">
-                    Comments
-                  </th>
-                  <th className="w-14 py-2 border-x-white border-2">
-                    Time Created
-                  </th>
-                  <th className="w-14 py-2 border-x-white border-2">
-                    Published
-                  </th>
-                  <th className="w-14 py-2 border-x-white border-2">Action</th>
-                </tr>
-                {input.searching || (input.searchPost === "" && getAllPost())}
-                {input.searching && input.searchResult}
+                <thead>
+                  <tr className="sticky top-0 bg-black text-white text-sm">
+                    <th className="w-14 py-2 border-x-white border-2">
+                      Post Title
+                    </th>
+                    <th className="w-14 py-2 border-x-white border-2">
+                      Content
+                    </th>
+                    <th className="w-14 py-2 border-x-white border-2">
+                      Author
+                    </th>
+                    <th className="w-14 py-2 border-x-white border-2">
+                      Comments
+                    </th>
+                    <th className="w-14 py-2 border-x-white border-2">
+                      Time Created
+                    </th>
+                    <th className="w-14 py-2 border-x-white border-2">
+                      Published
+                    </th>
+                    <th className="w-14 py-2 border-x-white border-2">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                
+                {input.searching || (input.searchPost === "" && <tbody>{getAllPost()}</tbody>)}
+                {input.searching && <tbody>{input.searchResult}</tbody>}
               </table>
             </div>
           </div>
@@ -197,7 +210,10 @@ function AdminPost() {
           </div>
         )}
       </div>
-      <div className="preview" dangerouslySetInnerHTML={createMarkup(convertedContent)}></div>
+      <div
+        className="preview"
+        dangerouslySetInnerHTML={createMarkup(convertedContent)}
+      ></div>
     </>
   );
 }
