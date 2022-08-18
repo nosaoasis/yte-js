@@ -37,9 +37,13 @@
   }
 }
 
+.zindex {
+  z-index: 10000000;
+}
+
 .wrapper-class {
   padding: 1rem;
-  border: 1px solid yellow;
+  border: 1px solid grey;
 }
 .editor-class {
   /* background-color:lightgray; */

@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import yteOne from "../../images/yte_one.jpg";
 import { useLocation } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
+import ConfirmPublishModal from "./ConfirmPublishModal";
+
+
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-
 import { convertToHTML } from "draft-convert";
-import DOMPurify from "dompurify";
 
 import { getAllPost, getSearchPostItem } from "../../helpers/posts";
 
 function AdminPost() {
   const adminPostLocation = useLocation();
-  // console.log(adminPostLocation)
+  
   const [input, setInput] = useState({
     searchPost: "",
     searching: false,
@@ -24,14 +24,13 @@ function AdminPost() {
     createPost: adminPostLocation.state !== null ? true : false,
   });
   const [convertedContent, setConvertedContent] = useState(null);
+  const [postTitle, setPostTilte] = useState("");
+  const [published, setPublished] = useState(false);
+  const [showConfirmPublishModal, setShowConfirmPublishModal] = useState(false);
 
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-
-  console.log("====================================");
-  console.log("the converted content is ", convertedContent);
-  console.log("====================================");
 
   const handleSearch = async (e) => {
     const name = e.target.name;
@@ -71,7 +70,26 @@ function AdminPost() {
     // make the axios call here when ready....
   };
 
-  const handleCreatePost = () => {
+  const handleCreatePost = (published) => {
+    if (!postTitle || !editorState.getCurrentContent().hasText()) {
+      alert("You title and content cannot be empty");
+      return;
+    }
+    axios
+      .post(`http://localhost:3764/api/v1/post/create`, {
+        post_body: convertedContent.toString(),
+        title: postTitle,
+        published
+      })
+      .then((resp) => {
+        console.log(resp.data);
+        setPublished(false)
+      })
+      .catch((err) => console.log(err));
+  };
+
+
+  const handleShowCreatePost = () => {
     setInput((prev) => ({
       ...prev,
       loading: false,
@@ -91,10 +109,6 @@ function AdminPost() {
   const handleEditorChange = (state) => {
     setEditorState(state);
     convertContentToHTML();
-    const rawState = JSON.stringify(
-      convertToRaw(editorState.getCurrentContent())
-    );
-    // console.log("rawState value is ", rawState);
   };
 
   const convertContentToHTML = () => {
@@ -102,11 +116,6 @@ function AdminPost() {
     setConvertedContent(currentContentAsHTML);
   };
 
-  const createMarkup = (html) => {
-    return {
-      __html: DOMPurify.sanitize(html),
-    };
-  };
 
   return (
     <>
@@ -118,7 +127,7 @@ function AdminPost() {
         {input.createPost || (
           <button
             className="capitalize p-2 px-4 mt-4 ml-8 bg-slate-700 text-white"
-            onClick={handleCreatePost}
+            onClick={handleShowCreatePost}
           >
             <i className="far fa-plus-square mr-2"></i>create new post
           </button>
@@ -175,8 +184,9 @@ function AdminPost() {
                     </th>
                   </tr>
                 </thead>
-                
-                {input.searching || (input.searchPost === "" && <tbody>{getAllPost()}</tbody>)}
+
+                {input.searching ||
+                  (input.searchPost === "" && <tbody>{getAllPost()}</tbody>)}
                 {input.searching && <tbody>{input.searchResult}</tbody>}
               </table>
             </div>
@@ -184,14 +194,36 @@ function AdminPost() {
         )}
 
         {input.createPost && (
-          <div className="mx-8">
-            <button className="capitalize p-2 px-4 mt-4 block text-2xl bg-none text-white">
-              New Post
-            </button>
-            <hr className="border-b-2 border-white mb-4" />
+          <div className="mx-8 w-f">
+            <div className="mb-4 flex justify-between">
+              <button className="capitalize p-2 px-4 mt-4 text-xl bg-none text-white">
+                New Post
+              </button>
+              <div className="">
+              <button
+                className="capitalize p-2 px-4 mt-4  bg-green-700 text-white"
+                onClick={() => handleCreatePost(published)}
+              >
+                Save Blog
+              </button>
+              <button 
+                className="capitalize p-2 px-4 mt-4 ml-2 bg-blue-700 text-white"
+                onClick={() => setShowConfirmPublishModal(true)}
+              >
+                Save & Publish Blog
+              </button>
+              </div>
+            </div>
+            <input
+              className="w-full mb-2 p-2 bg-gray-100 capitalize"
+              type="text"
+              value={postTitle}
+              placeholder="Blog Title"
+              onChange={(e) => setPostTilte(e.target.value)}
+            />
+
             <div className="border-2 border-x-white bg-white">
               <Editor
-                //  editorState={editorState}
                 toolbarClassName="toolbar-class"
                 wrapperClassName="wrapper-class"
                 editorClassName="editor-class"
@@ -209,11 +241,15 @@ function AdminPost() {
             </div>
           </div>
         )}
+
+        {showConfirmPublishModal && (
+          <ConfirmPublishModal 
+            setPublished={setPublished}
+            setShowConfirmPublishModal={setShowConfirmPublishModal} 
+            handleCreatePost={handleCreatePost}
+          />
+        )}
       </div>
-      <div
-        className="preview"
-        dangerouslySetInnerHTML={createMarkup(convertedContent)}
-      ></div>
     </>
   );
 }
