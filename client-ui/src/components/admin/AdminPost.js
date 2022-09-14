@@ -3,19 +3,19 @@ import yteOne from "../../images/yte_one.jpg";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import ConfirmPublishModal from "./ConfirmPublishModal";
-
+import RichTextEditor from "./rich-text-editor/RichTextEditor";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
-import { convertToHTML } from "draft-convert";
+import { convertToHTML, convertFromHTML } from "draft-convert";
 
 import { getAllPost, getSearchPostItem } from "../../helpers/posts";
 
 function AdminPost() {
   const adminPostLocation = useLocation();
-  
+
   const [input, setInput] = useState({
     searchPost: "",
     searching: false,
@@ -26,6 +26,7 @@ function AdminPost() {
   const [convertedContent, setConvertedContent] = useState(null);
   const [postTitle, setPostTilte] = useState("");
   const [published, setPublished] = useState(false);
+  const [customEditorContent, setCustomEditorContent] = useState(false);
   const [showConfirmPublishModal, setShowConfirmPublishModal] = useState(false);
 
   const [editorState, setEditorState] = useState(() =>
@@ -57,15 +58,6 @@ function AdminPost() {
       searching: true,
       searchResult: searcResult,
     }));
-    // .then((resp) => {
-    //   console.log("response is ", resp)
-    // setInput((prev) => ({
-    //   ...prev,
-    //   loading: false,
-    //   searching: true,
-    //   searchResult: resp
-    // }));
-    // })
 
     // make the axios call here when ready....
   };
@@ -75,19 +67,34 @@ function AdminPost() {
       alert("You title and content cannot be empty");
       return;
     }
+    // const rawState = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+    // console.log("raw state value is ", rawState)
+    // console.log("converted text is ", convertedContent);
+    // =======================================================
+    // =======================================================
     axios
       .post(`http://localhost:3764/api/v1/post/create`, {
         post_body: convertedContent.toString(),
         title: postTitle,
-        published
+        published,
       })
       .then((resp) => {
-        console.log(resp.data);
-        setPublished(false)
+        setPublished(false);
       })
       .catch((err) => console.log(err));
   };
 
+  const uploadImageCallBack = (file) => {
+    return new Promise((resolve, reject) => {
+      if (file) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          resolve({ data: { link: e.target.result } });
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  };
 
   const handleShowCreatePost = () => {
     setInput((prev) => ({
@@ -115,7 +122,6 @@ function AdminPost() {
     let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
     setConvertedContent(currentContentAsHTML);
   };
-
 
   return (
     <>
@@ -200,18 +206,18 @@ function AdminPost() {
                 New Post
               </button>
               <div className="">
-              <button
-                className="capitalize p-2 px-4 mt-4  bg-green-700 text-white"
-                onClick={() => handleCreatePost(published)}
-              >
-                Save Blog
-              </button>
-              <button 
-                className="capitalize p-2 px-4 mt-4 ml-2 bg-blue-700 text-white"
-                onClick={() => setShowConfirmPublishModal(true)}
-              >
-                Save & Publish Blog
-              </button>
+                <button
+                  className="capitalize p-2 px-4 mt-4  bg-green-700 text-white"
+                  onClick={() => handleCreatePost(published)}
+                >
+                  Save Blog
+                </button>
+                <button
+                  className="capitalize p-2 px-4 mt-4 ml-2 bg-blue-700 text-white"
+                  onClick={() => setShowConfirmPublishModal(true)}
+                >
+                  Save & Publish Blog
+                </button>
               </div>
             </div>
             <input
@@ -223,7 +229,8 @@ function AdminPost() {
             />
 
             <div className="border-2 border-x-white bg-white">
-              <Editor
+              {/* <Editor
+                editorState={editorState}
                 toolbarClassName="toolbar-class"
                 wrapperClassName="wrapper-class"
                 editorClassName="editor-class"
@@ -233,19 +240,27 @@ function AdminPost() {
                   textAlign: { inDropdown: true },
                   link: { inDropdown: true },
                   history: { inDropdown: true },
-                  // image: {uploadCallback : uploadImageCallBack, alt: {present : true, mandatory : true} },
+                  image: {
+                    uploadCallback: uploadImageCallBack,
+                    uploadEnabled: true,
+                    alt: { present: true, mandatory: false },
+                  },
                 }}
                 placeholder="Begin typing your article here..."
                 onEditorStateChange={handleEditorChange}
+              /> */}
+              <RichTextEditor 
+                customEditorContent={customEditorContent} 
+                setCustomEditorContent={setCustomEditorContent} 
               />
             </div>
           </div>
         )}
 
         {showConfirmPublishModal && (
-          <ConfirmPublishModal 
+          <ConfirmPublishModal
             setPublished={setPublished}
-            setShowConfirmPublishModal={setShowConfirmPublishModal} 
+            setShowConfirmPublishModal={setShowConfirmPublishModal}
             handleCreatePost={handleCreatePost}
           />
         )}

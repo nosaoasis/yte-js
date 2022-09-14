@@ -9,14 +9,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <Routes>
         <Route index path="/" element={<App />} />
         <Route path="admin/*" element={<Admin />} />
       </Routes>
-    </Router>
-  </React.StrictMode>,
+    </Router>,
+  // </React.StrictMode>,
   document.getElementById("root")
 );
 
