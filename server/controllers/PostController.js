@@ -3,9 +3,9 @@ const Posts = require("../models/PostModel")
 const createPost = async (req, res) => {
   const {post_content} = req.body
   console.log(req.body)
-  const post = await Posts.create(req.body)
+  // const post = await Posts.create(req.body)
 
-  res.status(201).json({app: "yteangel", owner: "Nomaze", post})
+  res.status(201).json({app: "yteangel", owner: "Nomaze"})
 }
 
 const getAllPosts = async (req, res) => {
