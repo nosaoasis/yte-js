@@ -2,14 +2,8 @@ import React, { useState } from "react";
 import yteOne from "../../images/yte_one.jpg";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import ConfirmPublishModal from "./ConfirmPublishModal";
+import { ConfirmPublishModal, PreviewPostModal } from "./modal";
 import RichTextEditor from "./rich-text-editor/RichTextEditor";
-
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import "draft-js/dist/Draft.css";
-import { EditorState, convertToRaw } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import { convertToHTML, convertFromHTML } from "draft-convert";
 
 import { getAllPost, getSearchPostItem } from "../../helpers/posts";
 
@@ -23,15 +17,16 @@ function AdminPost() {
     loading: false,
     createPost: adminPostLocation.state !== null ? true : false,
   });
-  const [convertedContent, setConvertedContent] = useState(null);
   const [postTitle, setPostTilte] = useState("");
+  const [fileData, setFileData] = useState();
+  const [images, setFile] = useState("");
+  // const [cloudinaryImageLink, setCloudinaryImageLink] = useState();
+  const [customEditorContent, setCustomEditorContent] = useState("");
+  const [newPosteditPost, setNewPosteditPost] = useState("");
   const [published, setPublished] = useState(false);
-  const [customEditorContent, setCustomEditorContent] = useState(false);
-  const [showConfirmPublishModal, setShowConfirmPublishModal] = useState(false);
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const [showConfirmPublishModal, setShowConfirmPublishModal] = useState(false);
+  const [showPreviewPost, setShowPreviewPost] = useState(false);
 
   const handleSearch = async (e) => {
     const name = e.target.name;
@@ -62,38 +57,32 @@ function AdminPost() {
     // make the axios call here when ready....
   };
 
-  const handleCreatePost = (published) => {
-    if (!postTitle || !editorState.getCurrentContent().hasText()) {
+  const handleCreatePost = async () => {
+    if (!postTitle || !customEditorContent) {
       alert("You title and content cannot be empty");
       return;
     }
-    // const rawState = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-    // console.log("raw state value is ", rawState)
-    // console.log("converted text is ", convertedContent);
-    // =======================================================
-    // =======================================================
-    axios
-      .post(`http://localhost:3764/api/v1/post/create`, {
-        post_body: convertedContent.toString(),
-        title: postTitle,
-        published,
-      })
-      .then((resp) => {
-        setPublished(false);
-      })
-      .catch((err) => console.log(err));
-  };
 
-  const uploadImageCallBack = (file) => {
-    return new Promise((resolve, reject) => {
-      if (file) {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          resolve({ data: { link: e.target.result } });
-        };
-        reader.readAsDataURL(file);
-      }
-    });
+    const formData = new FormData();
+    formData.append("image", fileData);
+    await axios
+      .post(`http://localhost:3764/api/v1/images/post`, formData)
+      .then(async (res) => {
+        await axios
+          .post(`http://localhost:3764/api/v1/post/create`, {
+            post_body: customEditorContent.toString(),
+            title: postTitle,
+            published,
+            imageLink: res.data.image
+          })
+          .then((resp) => {
+            setPostTilte("");
+            setPublished(false);
+            setCustomEditorContent("");
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log("error on loading", err));
   };
 
   const handleShowCreatePost = () => {
@@ -104,6 +93,7 @@ function AdminPost() {
       searchPost: "",
       createPost: true,
     }));
+    setNewPosteditPost("New Post");
   };
 
   const shwoAllPosts = () => {
@@ -113,20 +103,22 @@ function AdminPost() {
     }));
   };
 
-  const handleEditorChange = (state) => {
-    setEditorState(state);
-    convertContentToHTML();
+  const handleShowPreview = () => {
+    setShowPreviewPost(true);
+    console.log("----");
   };
 
-  const convertContentToHTML = () => {
-    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
-    setConvertedContent(currentContentAsHTML);
+  const handleFileChange = (e) => {
+    console.log("file value is ", e.target);
+    console.log("file value is ", e.target.files[0]);
+    setFileData(e.target.files[0]);
+    setFile(e.target.value);
   };
 
   return (
     <>
       <div
-        className="pt-4 pl-2 bg-no-repeat bg-cover h-screen border-white border-2"
+        className="pt-4 pl-2 bg-no-repeat bg-cover h-screen border-gray-600 border-2"
         style={{ backgroundImage: `url(${yteOne})` }}
       >
         <h2 className="text-3xl text-white font-bold ml-8">Posts</h2>
@@ -202,9 +194,9 @@ function AdminPost() {
         {input.createPost && (
           <div className="mx-8 w-f">
             <div className="mb-4 flex justify-between">
-              <button className="capitalize p-2 px-4 mt-4 text-xl bg-none text-white">
-                New Post
-              </button>
+              <span className="capitalize p-2 px-4 mt-4 text-xl bg-none text-white">
+                {newPosteditPost}
+              </span>
               <div className="">
                 <button
                   className="capitalize p-2 px-4 mt-4  bg-green-700 text-white"
@@ -218,6 +210,24 @@ function AdminPost() {
                 >
                   Save & Publish Blog
                 </button>
+                <button
+                  className="capitalize p-2 px-4 mt-4 ml-2 bg-yellow-500 text-white"
+                  onClick={handleShowPreview}
+                >
+                  Preview
+                </button>
+                <button className="capitalize p-2 px-4 mt-4 ml-2 bg-yellow-500 text-white">
+                  <form>
+                    <input
+                      value={images}
+                      type="file"
+                      name="file"
+                      accept="image/"
+                      onChange={handleFileChange}
+                    />
+                  </form>
+                  Add Image
+                </button>
               </div>
             </div>
             <input
@@ -229,32 +239,17 @@ function AdminPost() {
             />
 
             <div className="border-2 border-x-white bg-white">
-              {/* <Editor
-                editorState={editorState}
-                toolbarClassName="toolbar-class"
-                wrapperClassName="wrapper-class"
-                editorClassName="editor-class"
-                toolbar={{
-                  inline: { inDropdown: true },
-                  list: { inDropdown: true },
-                  textAlign: { inDropdown: true },
-                  link: { inDropdown: true },
-                  history: { inDropdown: true },
-                  image: {
-                    uploadCallback: uploadImageCallBack,
-                    uploadEnabled: true,
-                    alt: { present: true, mandatory: false },
-                  },
-                }}
-                placeholder="Begin typing your article here..."
-                onEditorStateChange={handleEditorChange}
-              /> */}
-              <RichTextEditor 
-                customEditorContent={customEditorContent} 
-                setCustomEditorContent={setCustomEditorContent} 
-              />
+              <RichTextEditor setCustomEditorContent={setCustomEditorContent} />
             </div>
           </div>
+        )}
+
+        {showPreviewPost && (
+          <PreviewPostModal
+            postTitle={postTitle}
+            customEditorContent={customEditorContent}
+            setShowPreviewPost={setShowPreviewPost}
+          />
         )}
 
         {showConfirmPublishModal && (

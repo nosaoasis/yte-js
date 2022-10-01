@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 const RichTextEditor = (props) => {
-  const {customEditorContent, setCustomEditorContent} = props
+  const {setCustomEditorContent} = props
 
   const updateContent = (e) => {
-    console.log(e.target.innerHTML)
-    console.log("wwwww")
+    const postContent = e.target.innerHTML
+    setCustomEditorContent(postContent)
   }
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const RichTextEditor = (props) => {
           </div>
         </div>
       
-        <div id="text-input" contentEditable="true" onInput={updateContent}></div>
+        <div id="text-input" className="editor_content_area" contentEditable="true" onInput={updateContent}></div>
       </div>
       
     </>

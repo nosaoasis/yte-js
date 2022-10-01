@@ -1,5 +1,5 @@
 import React from "react";
-// import axios from "axios";
+import DOMPurify from "dompurify";
 
 const dummyPostValue = [
   {
@@ -199,4 +199,10 @@ const getSearchPostItem = (inputValue) => {
   // );
 };
 
-export { getAllPost, getSearchPostItem };
+const createMarkup = (html) => {
+  return {
+    __html: DOMPurify.sanitize(html),
+  };
+};
+
+export { getAllPost, getSearchPostItem, createMarkup };

@@ -11,7 +11,7 @@ const Admin = () => {
     <>
       {location.pathname === "/admin" ? (
         <div className="flex">
-          <div className="w-10/12 w-full min-h-screen">
+          <div className="w-10/12 min-h-screen">
             <Routes>
               <Route index path="" element={<AdminInput />} />
             </Routes>

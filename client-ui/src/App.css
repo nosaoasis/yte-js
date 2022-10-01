@@ -139,11 +139,23 @@ box-shadow: 0 0 0 2px #fff, 0 0 0 3px #020929;
   padding: 20px;
   min-height: 20rem;
   max-height: 20rem;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .active {
   background: #e0e9ff;
+}
+
+.post_content a {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.editor_content_area a {
+  color: green;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 /* custom editor class end */

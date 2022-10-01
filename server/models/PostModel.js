@@ -1,6 +1,10 @@
 const mongoose = require("mongoose")
 
 const PostSchema = new mongoose.Schema({
+  imageLink: {
+    type: String,
+    require: [true, "Please upload an image"]
+  },
   title: {
     type: String,
     require: [true, "Enter a title for your blog"],
