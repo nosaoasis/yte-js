@@ -38,7 +38,7 @@
 }
 
 .zindex {
-  z-index: 10000000;
+  z-index: 100000;
 }
 
 .wrapper-class {
@@ -57,12 +57,10 @@
   /* color: white; */
 }
 
-
 .preview {
   padding: 1rem;
   margin-top: 1rem;
 }
-
 
 /* custom editor class start */
 .container {
@@ -70,7 +68,7 @@
   width: 90vmin;
   padding: 50px 30px;
   position: absolute;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
   border-radius: 10px;
@@ -101,7 +99,8 @@ select {
   border-radius: 3px;
 }
 
-.options label, .options select {
+.options label,
+.options select {
   font-family: "Poppins", sans-serif;
 }
 
@@ -124,13 +123,13 @@ input[type="color"] {
 }
 
 input[type="color"]::-webkit-color-swatch {
-border-radius: 15px;   
-box-shadow: 0 0 0 2px #fff, 0 0 0 3px #020929;
+  border-radius: 15px;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px #020929;
 }
 
 input[type="color"]::-moz-color-swatch {
-border-radius: 15px;   
-box-shadow: 0 0 0 2px #fff, 0 0 0 3px #020929;
+  border-radius: 15px;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px #020929;
 }
 
 #text-input {
@@ -159,3 +158,7 @@ box-shadow: 0 0 0 2px #fff, 0 0 0 3px #020929;
 }
 
 /* custom editor class end */
+
+.loading {
+  z-index: 100000000;
+}

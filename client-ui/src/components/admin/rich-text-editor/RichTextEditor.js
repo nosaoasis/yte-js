@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 const RichTextEditor = (props) => {
   const {setCustomEditorContent} = props
@@ -77,6 +77,9 @@ const RichTextEditor = (props) => {
           <button id="outdent" className="option-button spacing">
             <i className="fa-solid fa-outdent"></i>
           </button>
+          {/* <button id="" className="option-button image">
+          <i class="fa-solid fa-image"></i>
+          </button> */}
 
           {/* <!-- headings --> */}
           <select id="formatBlock" className="adv-option-button">
@@ -103,7 +106,7 @@ const RichTextEditor = (props) => {
           </div>
         </div>
       
-        <div id="text-input" className="editor_content_area" contentEditable="true" onInput={updateContent}></div>
+        <div id="text-input" className="editor_content_area outline-none" contentEditable="true" onInput={updateContent}></div>
       </div>
       
     </>

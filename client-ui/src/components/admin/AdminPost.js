@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { ConfirmPublishModal, PreviewPostModal } from "./modal";
 import RichTextEditor from "./rich-text-editor/RichTextEditor";
+import Compressor from "compressorjs";
+import { Loading } from "./";
 
 import { getAllPost, getSearchPostItem } from "../../helpers/posts";
 
@@ -18,12 +20,12 @@ function AdminPost() {
     createPost: adminPostLocation.state !== null ? true : false,
   });
   const [postTitle, setPostTilte] = useState("");
-  const [fileData, setFileData] = useState();
-  const [images, setFile] = useState("");
-  // const [cloudinaryImageLink, setCloudinaryImageLink] = useState();
   const [customEditorContent, setCustomEditorContent] = useState("");
   const [newPosteditPost, setNewPosteditPost] = useState("");
   const [published, setPublished] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [compressedFile, setCompressedFile] = useState(null);
 
   const [showConfirmPublishModal, setShowConfirmPublishModal] = useState(false);
   const [showPreviewPost, setShowPreviewPost] = useState(false);
@@ -57,14 +59,29 @@ function AdminPost() {
     // make the axios call here when ready....
   };
 
-  const handleCreatePost = async () => {
-    if (!postTitle || !customEditorContent) {
-      alert("You title and content cannot be empty");
+  const handleCompression = (e) => {
+    const image = e.target.files[0];
+    console.log("file value is ", image);
+
+    new Compressor(image, {
+      quality: 0.6,
+      success: (compressedResult) => {
+        setCompressedFile(compressedResult);
+      },
+    });
+  };
+
+  const handleCreatePost = async (published) => {
+    if (!postTitle || !customEditorContent || !compressedFile) {
+      alert("You title, content and image cannot be empty");
       return;
     }
-
+    console.log("aaadk")
+    setLoading(true);
+    console.log("aaadkkjnn")
+    
     const formData = new FormData();
-    formData.append("image", fileData);
+    formData.append("image", compressedFile);
     await axios
       .post(`http://localhost:3764/api/v1/images/post`, formData)
       .then(async (res) => {
@@ -73,14 +90,19 @@ function AdminPost() {
             post_body: customEditorContent.toString(),
             title: postTitle,
             published,
-            imageLink: res.data.image
+            imageLink: res.data.image,
           })
           .then((resp) => {
-            setPostTilte("");
-            setPublished(false);
-            setCustomEditorContent("");
+            // setLoading(false);
+            <Loading message="Your post has been sent. You will be redirected soon" />
+            setTimeout(() => {
+              window.location.reload(true)
+            }, 3000)
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            setLoading(false);
+            console.log(err)
+          });
       })
       .catch((err) => console.log("error on loading", err));
   };
@@ -105,14 +127,6 @@ function AdminPost() {
 
   const handleShowPreview = () => {
     setShowPreviewPost(true);
-    console.log("----");
-  };
-
-  const handleFileChange = (e) => {
-    console.log("file value is ", e.target);
-    console.log("file value is ", e.target.files[0]);
-    setFileData(e.target.files[0]);
-    setFile(e.target.value);
   };
 
   return (
@@ -140,13 +154,13 @@ function AdminPost() {
         )}
 
         {input.createPost || (
-          <div className="py-2 pl-2 ml-6 mr-8 pr-2 mt-4">
+          <div className="py-2 pl-2 ml-6 mr-8 mt-4">
             <input
               type="text"
               name="searchPost"
               placeholder="Search Posts by Title"
               value={input.searchPost}
-              className="border-2 border-white w-full p-2 rounded-md"
+              className="border-2 border-white w-full p-2 outline-none"
               onChange={handleSearch}
             />
           </div>
@@ -216,29 +230,34 @@ function AdminPost() {
                 >
                   Preview
                 </button>
-                <button className="capitalize p-2 px-4 mt-4 ml-2 bg-yellow-500 text-white">
-                  <form>
-                    <input
-                      value={images}
-                      type="file"
-                      name="file"
-                      accept="image/"
-                      onChange={handleFileChange}
-                    />
-                  </form>
-                  Add Image
-                </button>
               </div>
             </div>
-            <input
-              className="w-full mb-2 p-2 bg-gray-100 capitalize"
-              type="text"
-              value={postTitle}
-              placeholder="Blog Title"
-              onChange={(e) => setPostTilte(e.target.value)}
-            />
+            <div className="flex">
+              <label
+                htmlFor="postImage"
+                className="inputLabel  mb-2 p-2 mr-1 cursor-pointer bg-green-400"
+              >
+                <i className="fa-solid fa-image text-white w-auto h-full">
+                  <input
+                    className="hidden"
+                    id="postImage"
+                    type="file"
+                    name="file"
+                    accept="image/"
+                    onChange={handleCompression}
+                  />
+                </i>
+              </label>
+              <input
+                className="w-full mb-2 p-2 bg-gray-100 capitalize"
+                type="text"
+                value={postTitle}
+                placeholder="Blog Title"
+                onChange={(e) => setPostTilte(e.target.value)}
+              />
+            </div>
 
-            <div className="border-2 border-x-white bg-white">
+            <div className="border-2 border-x-white bg-white px-1">
               <RichTextEditor setCustomEditorContent={setCustomEditorContent} />
             </div>
           </div>
@@ -259,6 +278,8 @@ function AdminPost() {
             handleCreatePost={handleCreatePost}
           />
         )}
+
+        {loading && <Loading message="Loading" />}
       </div>
     </>
   );

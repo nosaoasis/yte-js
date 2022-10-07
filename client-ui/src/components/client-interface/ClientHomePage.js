@@ -21,14 +21,14 @@ const ClientHomePage = () => {
       );
   }, []);
 
-  const postList = state.allPost.map((post) => {
+  const publishedPostList = state.allPost.map((post) => {
     return <PostPreviewMode key={post._id} post={post} />;
   });
 
   return (
     <>
       <h3>Hello from ClientHomePage</h3>
-      {postList}
+      {publishedPostList}
     </>
   );
 };

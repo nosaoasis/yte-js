@@ -1,5 +1,5 @@
 import React from 'react'
-import postsImg from "../../images/meditation.jpg"
+// import postsImg from "../../images/meditation.jpg"
 // import DOMPurify from "dompurify";
 import { Link } from 'react-router-dom';
 import { createMarkup } from '../../helpers/posts';

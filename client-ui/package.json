@@ -9,6 +9,8 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
     "babel-polyfill": "^6.26.0",
+    "browser-image-compression": "^2.0.0",
+    "compressorjs": "^1.1.1",
     "dompurify": "^2.3.6",
     "draft-convert": "^2.1.12",
     "draft-js": "^0.11.7",
