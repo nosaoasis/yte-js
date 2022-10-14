@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import yteOne from "../../images/yte_one.jpg";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -24,6 +24,9 @@ function AdminPost() {
   const [newPosteditPost, setNewPosteditPost] = useState("");
   const [published, setPublished] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [allPost, setAllPost] = useState([]);
+  const [selectedImage, setSelectedImage] = useState()
+  const [previewImage, setPreviewImage] = useState()
 
   const [compressedFile, setCompressedFile] = useState(null);
 
@@ -61,24 +64,46 @@ function AdminPost() {
 
   const handleCompression = (e) => {
     const image = e.target.files[0];
-    console.log("file value is ", image);
+    if (image && image.type.substr(0, 5) === "image") {
+      setSelectedImage(image)
+    } else {
+      setSelectedImage(null)
+    }
 
     new Compressor(image, {
       quality: 0.6,
       success: (compressedResult) => {
         setCompressedFile(compressedResult);
-      },
+      }
     });
   };
+
+  useEffect(() => {
+    if (selectedImage) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreviewImage(reader.result)
+      }
+      reader.readAsDataURL(selectedImage)
+    } else {
+      setPreviewImage(null)
+    }
+  }, [selectedImage, previewImage])
+
+  useEffect(() => {
+    axios.get(`http://localhost:3764/api/v1/post`)
+    .then(resp => {
+      setAllPost(resp.data.posts);
+    })
+  }, [])
+
 
   const handleCreatePost = async (published) => {
     if (!postTitle || !customEditorContent || !compressedFile) {
       alert("You title, content and image cannot be empty");
       return;
     }
-    console.log("aaadk")
     setLoading(true);
-    console.log("aaadkkjnn")
     
     const formData = new FormData();
     formData.append("image", compressedFile);
@@ -93,15 +118,14 @@ function AdminPost() {
             imageLink: res.data.image,
           })
           .then((resp) => {
-            // setLoading(false);
-            <Loading message="Your post has been sent. You will be redirected soon" />
+            <Loading message="Your post has been sent. You will be redirected soon" />;
             setTimeout(() => {
-              window.location.reload(true)
-            }, 3000)
+              window.location.reload(true);
+            }, 3000);
           })
           .catch((err) => {
             setLoading(false);
-            console.log(err)
+            console.log(err);
           });
       })
       .catch((err) => console.log("error on loading", err));
@@ -126,6 +150,10 @@ function AdminPost() {
   };
 
   const handleShowPreview = () => {
+    if (!postTitle || !customEditorContent || !compressedFile) {
+      alert("You title, content and image cannot be empty");
+      return;
+    }
     setShowPreviewPost(true);
   };
 
@@ -174,7 +202,7 @@ function AdminPost() {
                 <thead>
                   <tr className="sticky top-0 bg-black text-white text-sm">
                     <th className="w-14 py-2 border-x-white border-2">
-                      Post Title
+                      Blog Title
                     </th>
                     <th className="w-14 py-2 border-x-white border-2">
                       Content
@@ -198,7 +226,7 @@ function AdminPost() {
                 </thead>
 
                 {input.searching ||
-                  (input.searchPost === "" && <tbody>{getAllPost()}</tbody>)}
+                  (input.searchPost === "" && <tbody>{getAllPost(allPost)}</tbody>)}
                 {input.searching && <tbody>{input.searchResult}</tbody>}
               </table>
             </div>
@@ -243,7 +271,7 @@ function AdminPost() {
                     id="postImage"
                     type="file"
                     name="file"
-                    accept="image/"
+                    accept="image/*"
                     onChange={handleCompression}
                   />
                 </i>
@@ -268,6 +296,7 @@ function AdminPost() {
             postTitle={postTitle}
             customEditorContent={customEditorContent}
             setShowPreviewPost={setShowPreviewPost}
+            previewImage={previewImage}
           />
         )}
 

@@ -1,7 +1,7 @@
 import { createMarkup } from "../../../helpers/posts";
 
 const PreviewPost = (props) => {
-  const { customEditorContent, setShowPreviewPost, postTitle } = props;
+  const { customEditorContent, setShowPreviewPost, postTitle, previewImage } = props;
 
   const handleClosePreview = () => {
     setShowPreviewPost(false);
@@ -12,8 +12,8 @@ const PreviewPost = (props) => {
       <div className="absolute p-4 top-0  w-10/12 h-full bg-black">
         <div className="relative">
           <img
-            className="mx-auto h-96 w-auto"
-            src="https://html.com/wp-content/uploads/Code.jpg"
+            className="mx-auto h-64 w-auto"
+            src={previewImage}
             alt="img"
           />
           <i
@@ -24,7 +24,7 @@ const PreviewPost = (props) => {
         <div className="mt-4">
           <h1 className="text-white capitalize font-bold text-xl">{postTitle}</h1>
           <div
-            className="post_content mt-4 text-white overflow-y-scroll h-52"
+            className="post_content mt-4 text-black bg-white p-2 overflow-y-scroll max-h-72"
             dangerouslySetInnerHTML={createMarkup(customEditorContent)}
           ></div>
         </div>
