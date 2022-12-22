@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const RichTextEditor = (props) => {
   const { setCustomEditorContent, editBlogContent } = props;
 
-  // const [initValue, setInitValue] = useState(editBlogContent || "")
+  const [initValue, setInitValue] = useState(editBlogContent || "")
 
   const updateContent = (e) => {
     const postContent = e.target.innerHTML;
@@ -111,10 +111,11 @@ const RichTextEditor = (props) => {
         <div
           id="text-input"
           className="editor_content_area outline-none"
-          contentEditable="true"
+          contentEditable={true}
           onInput={updateContent}
         >
-          {props.children}
+          {editBlogContent}
+          {/* {props.children} */}
         </div>
         
       </div>

@@ -5,7 +5,7 @@ import axios from "axios";
 import { ConfirmPublishModal, PreviewPostModal } from "./modal";
 import RichTextEditor from "./rich-text-editor/RichTextEditor";
 import Compressor from "compressorjs";
-import { Loading } from "./";
+import { Loading, BlogTableList } from "./";
 import adminMenuList from "./admin-menu-list";
 import { defaultMenu } from "./AdminMenu";
 import Pagination from "../helper-components/Pagination";
@@ -22,6 +22,7 @@ function AdminPost() {
     loading: false,
     createPost: adminPostLocation.state !== null ? true : false,
   });
+  const pageNum = localStorage.getItem("page")
   const [postTitle, setPostTitle] = useState("");
   const [customEditorContent, setCustomEditorContent] = useState("");
   const [newPosteditPost, setNewPosteditPost] = useState("");
@@ -31,7 +32,7 @@ function AdminPost() {
   const [allPost, setAllPost] = useState([]);
   const [selectedImage, setSelectedImage] = useState();
   const [previewImage, setPreviewImage] = useState();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(pageNum || 1);
   const [pages, setPages] = useState(1);
 
   const [compressedFile, setCompressedFile] = useState(null);
@@ -104,6 +105,22 @@ function AdminPost() {
     });
   };
 
+  const fetchPosts = (page) => {
+    setLoadingPost(true);
+    axios
+      .get(`http://localhost:3764/api/v1/post/${page}`)
+      .then((resp) => {
+        const { msg, posts, nbHits, page, pages: totalPages } = resp.data;
+        setPages(totalPages);
+        setAllPost(posts);
+        setLoadingPost(false);
+      })
+      .catch((err) => {
+        console.error("An unexpected error occurred", err);
+        setLoadingPost(false);
+      });
+  };
+
   useEffect(() => {
     if (selectedImage) {
       const reader = new FileReader();
@@ -117,20 +134,9 @@ function AdminPost() {
   }, [selectedImage, previewImage]);
 
   useEffect(() => {
-    setLoadingPost(true);
+    localStorage.setItem("page", page)
     console.log("useeffect page number is ", page);
-    axios
-      .get(`http://localhost:3764/api/v1/post/${page}`)
-      .then((resp) => {
-        const { msg, posts, nbHits, page, pages: totalPages } = resp.data;
-        setPages(totalPages);
-        setAllPost(posts);
-        setLoadingPost(false);
-      })
-      .catch((err) => {
-        console.error("An unexpected error occurred", err);
-        setLoadingPost(false);
-      });
+    fetchPosts(page);
   }, [page]);
 
   const handleCreatePost = async (published) => {
@@ -192,6 +198,26 @@ function AdminPost() {
     setShowPreviewPost(true);
   };
 
+  const delPost = (id, page) => {
+    console.log("page at the del function is ", page)
+    console.log("the post id to be deleted is ", id);
+    const token = localStorage.getItem("token");
+    console.log("token value is ", token)
+    const payload = {
+      post_id: id
+    }
+    axios
+      .post(`http://localhost:3764/api/v1/post/delete_post`, payload,  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        fetchPosts(page)
+      })
+      .catch((err) => console.log("An error occured", err));
+  };
+
   return (
     <>
       <div className="flex">
@@ -243,40 +269,50 @@ function AdminPost() {
                   {loadingPost ? (
                     <Loading message="Fetching Blog" />
                   ) : (
-                    // <div className="">
-                    <table className="">
-                      <thead>
-                        <tr className="sticky top-0 bg-black text-white text-sm">
-                          <th className="w-14 py-2 border-x-white border-2">
-                            Blog Title
-                          </th>
-                          <th className="w-14 py-2 border-x-white border-2">
-                            Content
-                          </th>
-                          <th className="w-14 py-2 border-x-white border-2">
-                            Author
-                          </th>
-                          <th className="w-14 py-2 border-x-white border-2">
-                            Comments
-                          </th>
-                          <th className="w-14 py-2 border-x-white border-2">
-                            Time Created
-                          </th>
-                          <th className="w-14 py-2 border-x-white border-2">
-                            Published
-                          </th>
-                          <th className="w-14 py-2 border-x-white border-2">
-                            Action
-                          </th>
-                        </tr>
-                      </thead>
+                    <>
+                      <table className="">
+                        <thead>
+                          <tr className="sticky top-0 bg-black text-white text-sm">
+                            <th className="w-14 py-2 border-x-white border-2">
+                              Blog Title
+                            </th>
+                            <th className="w-14 py-2 border-x-white border-2">
+                              Content
+                            </th>
+                            <th className="w-14 py-2 border-x-white border-2">
+                              Author
+                            </th>
+                            <th className="w-14 py-2 border-x-white border-2">
+                              Comments
+                            </th>
+                            <th className="w-14 py-2 border-x-white border-2">
+                              Time Created
+                            </th>
+                            <th className="w-14 py-2 border-x-white border-2">
+                              Published
+                            </th>
+                            <th className="w-14 py-2 border-x-white border-2">
+                              Action
+                            </th>
+                          </tr>
+                        </thead>
 
-                      {input.searching ||
-                        (input.searchPost === "" && (
-                          <tbody>{getAllPost(allPost)}</tbody>
-                        ))}
-                      {input.searching && <tbody>{input.searchResult}</tbody>}
-                    </table>
+                        {input.searching ||
+                          (input.searchPost === "" && (
+                            <tbody>
+                              {allPost.map((post, idx) => (
+                                <BlogTableList
+                                  key={idx}
+                                  post={post}
+                                  delPost={delPost}
+                                  page={page}
+                                />
+                              ))}
+                            </tbody>
+                          ))}
+                        {input.searching && <tbody>{input.searchResult}</tbody>}
+                      </table>
+                    </>
                   )}
                 </div>
               </div>
@@ -286,6 +322,7 @@ function AdminPost() {
             </>
           )}
 
+          {/* Create Post - Rich Text Editor */}
           {input.createPost && (
             <div className="mx-8 w-f">
               <div className="mb-4 flex justify-between">
@@ -341,7 +378,7 @@ function AdminPost() {
               <div className="border-2 border-x-white bg-white px-1">
                 <RichTextEditor
                   setCustomEditorContent={setCustomEditorContent}
-                  editBlogContent="default value"
+                  editBlogContent=""
                 ></RichTextEditor>
               </div>
             </div>

@@ -86,6 +86,18 @@ const searchPost = async (req, res) => {
   res.status(200).json({ msg: "Success", response: "response" });
 };
 
+const deletePost = async (req, res) => {
+  console.log("at the delete controller....")
+  const {post_id} = req.body
+  console.log("post_id value is ", post_id)
+  // return res.status(200).json({abc: 123})
+  const post = await Posts.findByIdAndRemove({_id : post_id})
+  if (!post) {
+    return res.status(500).json({ msg: "Error updating post" })
+  }
+  return res.status(200).json({ msg: "Successfully updated post" });
+}
+
 module.exports = {
   createPost,
   getAllPosts,
@@ -93,4 +105,5 @@ module.exports = {
   getSinglePost,
   publishUnpublishPost,
   searchPost,
+  deletePost
 };

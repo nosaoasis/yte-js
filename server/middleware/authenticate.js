@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken")
 const adminUserAuthenticateMiddleware = async (req, res, next) => {
   console.log("aaa")
   const authHeader = req.headers.authorization;
+  console.log(authHeader)
+  console.log("bbb")
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({ msg: "Error", response: "Unauthorized" });

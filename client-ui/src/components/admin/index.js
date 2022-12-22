@@ -5,6 +5,7 @@ import Loading from "./Loading";
 import AdminSinglePostPreview from "./AdminSinglePostPreview";
 import AdminRegister from "./AdminRegister";
 import AdminLogin from "./AdminLogin";
+import BlogTableList from "./BlogTableList";
 
 export {
   AdminHome,
@@ -13,5 +14,6 @@ export {
   Loading,
   AdminSinglePostPreview,
   AdminRegister,
-  AdminLogin
+  AdminLogin,
+  BlogTableList,
 };

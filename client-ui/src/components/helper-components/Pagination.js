@@ -19,9 +19,9 @@ const Pagination = (props) => {
 
   return pages > 1 && (
     <div>
-      <button className="text-red-700 cursor-pointer p-1 mr-1" onClick={() => setPage(page - 1)} disabled={page === 1 ? true : false}>Previous</button>
+      <button className="text-red-700 cursor-pointer p-1 mr-1" onClick={() => setPage(Number(page) - 1)} disabled={page === 1 ? true : false}>Previous</button>
       {middlePaginationList}
-      <button className="text-red-700 cursor-pointer p-1 mr-1" onClick={() => setPage(page + 1)} disabled={page === pages ? true : false}>Next</button>
+      <button className="text-red-700 cursor-pointer p-1 mr-1" onClick={() => setPage(Number(page) + 1)} disabled={page === pages ? true : false}>Next</button>
     </div>
   )
 

@@ -8,7 +8,8 @@ const {
   createPostAndPublish,
   getSinglePost,
   publishUnpublishPost,
-  searchPost
+  searchPost, 
+  deletePost
 } = require("../controllers/PostController");
 const {adminUserAuthenticateMiddleware} = require("../middleware/authenticate")
 
@@ -20,5 +21,6 @@ router.post("/create_and_publish", createPostAndPublish);
 router.get("/get_single_post/:post_id", getSinglePost);
 router.post("/update_publish", publishUnpublishPost)
 router.post('/search_post', adminUserAuthenticateMiddleware, searchPost)
+router.post('/delete_post', adminUserAuthenticateMiddleware, deletePost)
 
 module.exports = router;
