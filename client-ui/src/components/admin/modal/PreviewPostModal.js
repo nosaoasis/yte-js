@@ -17,14 +17,14 @@ const PreviewPost = (props) => {
             alt="img"
           />
           <i
-            className="fa-solid fa-window-close cursor-pointer text-white text-xl absolute top-2 right-2"
+            className="fa-solid fa-window-close cursor-pointer text-gray-400 text-xl absolute top-2 right-2"
             onClick={handleClosePreview}
           ></i>
         </div>
         <div className="mt-4">
-          <h1 className="text-white capitalize font-bold text-xl">{postTitle}</h1>
+          <h1 className="text-gray-100 capitalize font-bold text-xl">{postTitle}</h1>
           <div
-            className="post_content mt-4 text-black bg-white p-2 overflow-y-scroll max-h-72"
+            className="post_content mt-4 text-black bg-white p-2 overflow-y-scroll h-72"
             dangerouslySetInnerHTML={createMarkup(customEditorContent)}
           ></div>
         </div>

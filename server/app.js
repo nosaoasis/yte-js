@@ -7,6 +7,7 @@ const app = express()
 
 const Posts = require("./routes/post_routes")
 const Images = require("./routes/images_routes")
+const Admin = require("./routes/admin_routes")
 
 
 app.use(express.json({}))
@@ -14,6 +15,7 @@ app.use(cors())
 
 app.use('/api/v1/post', Posts)
 app.use('/api/v1/images', Images)
+app.use('/api/v1/admin', Admin)
 
 const PORT = process.env.PORT
 

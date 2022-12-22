@@ -7,7 +7,7 @@ const defaultMenu = (adminMenuList) => {
     return (
       <React.Fragment key={id}>
         <li className="text-gray-200 py-2 px-2 mr-2 font-bold hover:bg-white hover:text-black">
-          <Link to={to_link}>
+          <Link to={`/admin/${to_link}`}>
             <i className={`${fa_icon} mr-2`}></i>
             {page_name}
           </Link>

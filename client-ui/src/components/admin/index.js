@@ -1,6 +1,17 @@
 import AdminHome from "./AdminHome";
-import AdminInput from "./AdminInput";
+import AdminSecretKey from "./AdminSecretKey";
 import AdminPost from "./AdminPost";
 import Loading from "./Loading";
+import AdminSinglePostPreview from "./AdminSinglePostPreview";
+import AdminRegister from "./AdminRegister";
+import AdminLogin from "./AdminLogin";
 
-export { AdminHome, AdminInput, AdminPost, Loading }
+export {
+  AdminHome,
+  AdminSecretKey,
+  AdminPost,
+  Loading,
+  AdminSinglePostPreview,
+  AdminRegister,
+  AdminLogin
+};

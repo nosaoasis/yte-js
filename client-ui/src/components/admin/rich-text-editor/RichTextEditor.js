@@ -1,16 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const RichTextEditor = (props) => {
-  const {setCustomEditorContent} = props
+  const { setCustomEditorContent, editBlogContent } = props;
+
+  // const [initValue, setInitValue] = useState(editBlogContent || "")
 
   const updateContent = (e) => {
-    const postContent = e.target.innerHTML
-    setCustomEditorContent(postContent)
-  }
+    const postContent = e.target.innerHTML;
+    setCustomEditorContent(postContent);
+  };
 
   useEffect(() => {
-    window['customRichTextJS']()
-  }, [])
+    window["customRichTextJS"]();
+  }, []);
 
   return (
     <>
@@ -105,10 +107,17 @@ const RichTextEditor = (props) => {
             <label htmlFor="backColor">Highlight Color</label>
           </div>
         </div>
-      
-        <div id="text-input" className="editor_content_area outline-none" contentEditable="true" onInput={updateContent}></div>
+
+        <div
+          id="text-input"
+          className="editor_content_area outline-none"
+          contentEditable="true"
+          onInput={updateContent}
+        >
+          {props.children}
+        </div>
+        
       </div>
-      
     </>
   );
 };
