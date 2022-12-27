@@ -1,27 +1,43 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Loading } from "./index";
 import adminMenuList from "./admin-menu-list";
 import { defaultMenu } from "./AdminMenu";
+import { publishPost, unpublishPost } from "../../helpers/posts";
 
 const SinglePost = (props) => {
   const params = useParams();
-  console.log("you are the Admin Single Post Page");
-  console.log("the Params value is ", params.post_id);
   const { post_id } = params;
 
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [postDetails, setPostDetails] = useState({
-    id: "",
-    createdAT: "",
-    imageLink: "",
-    post_body: "",
-    published: "",
-    title: "",
+    id: null,
+    createdAT: null,
+    imageLink: null,
+    post_body: null,
+    title: null,
   });
+  const [published, setIsPublished] = useState(null);
+
+  const deletePost = () => {
+    const token = localStorage.getItem("token");
+    const payload = {
+      post_id: postDetails.id,
+    };
+    axios
+      .post(`http://localhost:3764/api/v1/post/delete_post`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        navigate("/admin/posts", { replace: true });
+      })
+      .catch((err) => console.log("An error occured", err));
+  };
 
   useEffect(() => {
     axios
@@ -29,7 +45,6 @@ const SinglePost = (props) => {
         params: { post_id },
       })
       .then((res) => {
-        console.log(res);
         const { _id, imageLink, createdAt, post_body, title, published } =
           res.data.post;
         setPostDetails((prev) => ({
@@ -38,9 +53,9 @@ const SinglePost = (props) => {
           createdAt,
           imageLink,
           post_body,
-          published,
           title,
         }));
+        setIsPublished(published);
         setLoading(false);
       })
       .catch((err) => console.error("an error occured.... ", err));
@@ -69,19 +84,25 @@ const SinglePost = (props) => {
                 <div>
                   <button
                     className="capitalize p-2 px-4 mt-8 mr-3 bg-yellow-700 text-white"
-                    // onClick={() => navigate(-1)}
+                    onClick={
+                      published
+                        ? () => unpublishPost(postDetails.id, setIsPublished)
+                        : () => publishPost(postDetails.id, setIsPublished)
+                    }
                   >
-                    {postDetails.published ? "Unpublish" : "Publish"}
+                    {published ? "Unpublish" : "Publish"}
                   </button>
-                  <button
-                    className="capitalize p-2 px-4 mt-8 mr-3 bg-blue-700 text-white"
-                    // onClick={() => navigate(-1)}
-                  >
-                    Edit
-                  </button>
+                  <Link to={`/admin/post/edit/${post_id}`}>
+                    <button
+                      disabled={published}
+                      className="capitalize p-2 px-4 mt-8 mr-3 bg-blue-700 text-white"
+                    >
+                      Edit
+                    </button>
+                  </Link>
                   <button
                     className="capitalize p-2 px-4 mt-8 bg-red-700 text-white"
-                    // onClick={() => navigate(-1)}
+                    onClick={deletePost}
                   >
                     Delete
                   </button>
@@ -103,7 +124,7 @@ const SinglePost = (props) => {
                     Created: {new Date(postDetails.createdAt).toLocaleString()}
                   </p>
                   <p className="text-green-700 font-semibold">
-                    Published: {postDetails.published ? "Yes" : "No"}
+                    Published: {published ? "Yes" : "No"}
                   </p>
                 </div>
               </div>

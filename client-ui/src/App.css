@@ -80,6 +80,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 15px;
+  color: white;
 }
 
 .container button {
@@ -97,6 +98,7 @@ select {
   padding: 7px;
   border: 1px solid #020929;
   border-radius: 3px;
+  color: black;
 }
 
 .options label,
@@ -155,6 +157,8 @@ input[type="color"]::-moz-color-swatch {
   color: green;
   cursor: pointer;
   text-decoration: underline;
+  max-width: 10rem;
+  word-wrap: break-word;
 }
 
 /* custom editor class end */

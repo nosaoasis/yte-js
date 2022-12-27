@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Loading } from ".";
 import { useNavigate ,useLocation} from "react-router-dom";
 
 const AdminSecretKey = () => {
@@ -49,7 +48,6 @@ const AdminSecretKey = () => {
 
   return (
     <>
-      {/* <Loading message="Resolving Request" /> */}
       <div className="flex bg-black h-screen w-screen items-center justify-center">
       <p className="text-gray-200 absolute top-28 text-2xl font-bold">
           {adminMessage}

@@ -12,7 +12,6 @@ const AdminRegister = () => {
   });
 
   const navigate = useNavigate();
-  
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -37,7 +36,7 @@ const AdminRegister = () => {
         lastname: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
       });
       return;
     }
@@ -48,34 +47,39 @@ const AdminRegister = () => {
         lastname: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
       });
       return;
     }
-    // console.log("form filled properly");
-    const tToken = localStorage.getItem("tToken")
-    // console.log(localStorage.getItem("tToken"))
-    const payload = {firstname: input.firstname,
+    const tToken = localStorage.getItem("tToken");
+    const payload = {
+      firstname: input.firstname,
       lastname: input.lastname,
       email: input.email,
-      password: input.password}
+      password: input.password,
+    };
     axios
       .post(`http://localhost:3764/api/v1/admin/register`, payload, {
-        headers : {
-          Authorization: `Bearer ${tToken}`
-        }
+        headers: {
+          Authorization: `Bearer ${tToken}`,
+        },
       })
       .then((res) => {
-        const {msg, token} = res.data
+        const { msg, token } = res.data;
         if (msg === "Error") {
-          localStorage.removeItem("tToken")
-          navigate('/admin', {state: {message : "You're not authorized."}})
+          localStorage.removeItem("tToken");
+          navigate("/admin", { state: { message: "You're not authorized." } });
         }
         if (msg === "Success") {
-          localStorage.removeItem("tToken")
-          localStorage.setItem("token", token)
-          
-          navigate('/admin/login', {state: {message: "Your admin account has been successfully created. You may now login."}})
+          localStorage.removeItem("tToken");
+          localStorage.setItem("token", token);
+
+          navigate("/admin/login", {
+            state: {
+              message:
+                "Your admin account has been successfully created. You may now login.",
+            },
+          });
         }
       })
       .catch((err) => console.error("An error occurred ", err));

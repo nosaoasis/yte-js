@@ -5,16 +5,17 @@ const adminUserAuthenticateMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   console.log(authHeader)
   console.log("bbb")
-
+  
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({ msg: "Error", response: "Unauthorized" });
     return
   }
   
   const token = authHeader.split(" ")[1];
-
+  
   try {
     const decodeToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    console.log("ccc")
     console.log("authenticate token value is ", decodeToken)
     req.token = decodeToken
     next()

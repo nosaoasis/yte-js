@@ -1,15 +1,14 @@
 const express = require("express");
-// const { model } = require("mongoose")
 const router = express.Router();
 
 const {
   createPost,
   getAllPosts,
-  createPostAndPublish,
   getSinglePost,
   publishUnpublishPost,
   searchPost, 
-  deletePost
+  deletePost,
+  updatePost
 } = require("../controllers/PostController");
 const {adminUserAuthenticateMiddleware} = require("../middleware/authenticate")
 
@@ -17,10 +16,10 @@ const {adminUserAuthenticateMiddleware} = require("../middleware/authenticate")
 
 router.get("/:page", getAllPosts);
 router.post("/create", createPost);
-router.post("/create_and_publish", createPostAndPublish);
 router.get("/get_single_post/:post_id", getSinglePost);
 router.post("/update_publish", publishUnpublishPost)
 router.post('/search_post', adminUserAuthenticateMiddleware, searchPost)
 router.post('/delete_post', adminUserAuthenticateMiddleware, deletePost)
+router.post('/update_post/:post_id', adminUserAuthenticateMiddleware, updatePost)
 
 module.exports = router;

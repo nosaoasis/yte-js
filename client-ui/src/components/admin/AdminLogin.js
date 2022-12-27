@@ -32,12 +32,11 @@ const AdminLogin = () => {
       });
       return;
     }
-    // const token = localStorage.getItem("token");
+
     axios
       .post(`http://localhost:3764/api/v1/admin/login`, input)
       .then((res) => {
-        const { msg, response, token } = res.data;
-        console.log("the logged in admin has the following details =====", response)
+        const { msg, token } = res.data;
         if (msg === "Error") {
           localStorage.removeItem("token")
           window.location.reload();

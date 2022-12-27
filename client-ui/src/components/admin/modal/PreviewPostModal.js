@@ -28,9 +28,6 @@ const PreviewPost = (props) => {
             dangerouslySetInnerHTML={createMarkup(customEditorContent)}
           ></div>
         </div>
-        {/* <div className="post_content mt-6 text-white">
-          lorem12lfmvmfvmfv,ml,mfd,e,dlp,d
-        </div> */}
       </div>
     </>
   );
