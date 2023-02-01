@@ -13,9 +13,9 @@ const secretKey = async (req, res) => {
   if (secretKey === secret_key) {
     const jwtId = new Date().toLocaleString();
     const token = await jwt.sign(
-      { jwtId, jwttoken: "jwttoken" },
+      { jwtId, jwttoken: "jwttoken", isLoggedIn: false },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: "30d" }
+      { expiresIn: "180s" }
     );
     if (!token) {
       res.status(500).json({ msg: "Server Error", response: null });
@@ -49,8 +49,8 @@ const adminRegister = async (req, res) => {
     return;
   }
   const { _id } = registeredAdmin;
-  const ntoken = await jwt.sign({ _id, email }, process.env.JWT_SECRET_KEY, {
-    expiresIn: "2d",
+  const ntoken = await jwt.sign({ _id, email, jwttoken: "admin", isLoggedIn: true }, process.env.JWT_SECRET_KEY, {
+    expiresIn: "1d",
   });
   res
     .status(200)
@@ -76,7 +76,7 @@ const adminLogin = async (req, res) => {
       res.status(401).json({ msg: "Error", response: "Unauthorized" });
       return;
     }
-    const token = await jwt.sign({ email }, process.env.JWT_SECRET_KEY, {
+    const token = await jwt.sign({ email, jwttoken: "admin", isLoggedIn: true }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1d",
     });
     res.status(200).json({ msg: "Success", response: adminUser, token });
