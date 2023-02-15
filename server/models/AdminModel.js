@@ -5,15 +5,15 @@ const jwt = require("jsonwebtoken")
 const adminSchema = new mongoose.Schema({
   firstname: {
     type: String,
-    required: [true, "Please provide a name"],
+    required: [true, "Please provide your firstname"],
     minlength: 3,
-    maxlength: 50
+    maxlength: 12
   },
   lastname: {
     type: String,
-    required: [true, "Please provide a name"],
+    required: [true, "Please provide your lastname"],
     minlength: 3,
-    maxlength: 50
+    maxlength: 12
   },
   email: {
     type:String,
@@ -32,19 +32,19 @@ const adminSchema = new mongoose.Schema({
   },
 })
 
-// userSchema.pre('save', async function(next){
-//   const salt = await bcrypt.genSalt(10)
-//   this.password = await bcrypt.hash(this.password, salt)
-//   next()
-// })
+adminSchema.pre('save', async function(next){
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+  next()
+})
 
-// userSchema.methods.createJWT = function(){
-//   return jwt.sign({userId: this._id, name:this.name}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_LIFETIME})
-// }
+adminSchema.methods.createJWT = function(){
+  return jwt.sign({_id: this._id, email:this.email}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_PERIOD})
+}
 
-// userSchema.methods.comparePassword = async function(loginPassword){
-//   const isMatched = await bcrypt.compareSync(loginPassword, this.password)
-//   return isMatched
-// }
+adminSchema.methods.comparePassword = async function(loginPassword) {
+  const isMatched = await bcrypt.compareSync(loginPassword, this.password)
+  return isMatched
+}
 
 module.exports = mongoose.model("Admin", adminSchema)
