@@ -1,6 +1,5 @@
 const Admin = require("../models/AdminModel");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 
 const secretKey = async (req, res) => {
   const secret_key = process.env.ADMIN_SECRET_KEY;
@@ -13,9 +12,9 @@ const secretKey = async (req, res) => {
   if (secretKey === secret_key) {
     const jwtId = new Date().toLocaleString();
     const token = await jwt.sign(
-      { jwtId, jwttoken: "jwttoken", isLoggedIn: false },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "180s" }
+      { jwtId, jwttoken: "jwttoken" },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.SECRET_KEY_ROUTE_VALIDITY }
     );
     if (!token) {
       res.status(500).json({ msg: "Server Error", response: null });
@@ -33,28 +32,16 @@ const adminRegister = async (req, res) => {
     return;
   }
 
-  const { firstname, lastname, email, password } = req.body;
-  const salt = await bcrypt.genSalt(10);
+  try {
+    const registeredAdmin = await Admin.create({ ...req.body });
+    const ntoken = registeredAdmin.createJWT();
 
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  const registeredAdmin = await Admin.create({
-    firstname,
-    lastname,
-    email,
-    password: hashedPassword,
-  });
-  if (!registeredAdmin) {
-    res.status(404).json({ msg: "Failed" });
-    return;
+    res
+      .status(200)
+      .json({ msg: "Success", response: registeredAdmin, token: ntoken });
+  } catch (error) {
+    res.status(500).json({ msg: "Error", response: error });
   }
-  const { _id } = registeredAdmin;
-  const ntoken = await jwt.sign({ _id, email, jwttoken: "admin", isLoggedIn: true }, process.env.JWT_SECRET_KEY, {
-    expiresIn: "1d",
-  });
-  res
-    .status(200)
-    .json({ msg: "Success", response: registeredAdmin, token: ntoken });
 };
 
 const adminLogin = async (req, res) => {
@@ -71,17 +58,38 @@ const adminLogin = async (req, res) => {
       res.status(401).json({ msg: "Error", response: "Unauthorized" });
       return;
     }
-    const isPasswordMatched = bcrypt.compareSync(password, adminUser.password);
+    const isPasswordMatched = adminUser.comparePassword(password);
     if (!isPasswordMatched) {
       res.status(401).json({ msg: "Error", response: "Unauthorized" });
       return;
     }
-    const token = await jwt.sign({ email, jwttoken: "admin", isLoggedIn: true }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const token = await jwt.sign(
+      { email, isLoggedIn: true },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.SECRET_VALIDITY,
+      }
+    );
+
     res.status(200).json({ msg: "Success", response: adminUser, token });
   } catch (error) {
-    res.status(401).json({ msg: "Error", response: "Unauthorized" });
+    res.status(500).json({ msg: "Error", response: "Server Error" });
+  }
+};
+
+const authenticateRoute = async (req, res) => {
+  const { token } = req.params;
+
+  try {
+    const loggedIn = jwt.verify(token, process.env.JWT_SECRET);
+    if (loggedIn) {
+      res.status(200).json({ msg: "Success", response: loggedIn, tokenExpired: false });
+      return
+    }
+
+    res.status(401).json({ msg: "Error", response: "Unauthorized", tokenExpired: true });
+  } catch (error) {
+    res.status(500).json({ msg: "Error", response: "Server Error" });
   }
 };
 
@@ -89,4 +97,5 @@ module.exports = {
   secretKey,
   adminRegister,
   adminLogin,
+  authenticateRoute,
 };
