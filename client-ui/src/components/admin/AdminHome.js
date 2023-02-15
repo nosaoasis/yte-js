@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import adminMenuList from "./admin-menu-list";
 import { DashboardGridMenu, defaultMenu } from "./AdminMenu";
 import yteSix from "../../images/yte_six.jpg";
+import axios from "axios";
 
 const AdminHome = () => {
   const [contentCount, setContentCount] = useState({
@@ -34,6 +35,13 @@ const AdminHome = () => {
   };
 
   const contentCountList = getContentCount(contentCount);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3764/api/v1/admin/authenticate_route`)
+    .then((res) => {
+      console.log("res value is ",res)
+    }).catch(err => console.log(err))
+  }, [])
 
   return (
     <>
