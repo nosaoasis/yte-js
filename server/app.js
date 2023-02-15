@@ -1,10 +1,19 @@
+const cookieSession = require('cookie-session')
+const cookieParser = require("cookie-parser");
+const express = require("express")
+const app = express()
 require("dotenv").config()
 const connectDB = require("./db/connect")
-const express = require("express")
 const cors = require("cors")
 
-const app = express()
 
+app.use(cookieParser());
+app.use(cookieSession({
+  name: "session",
+  keys: ["key1", "key2"]
+}))
+
+// routes
 const PostsRoute = require("./routes/post_routes")
 const ImagesRoute = require("./routes/images_routes")
 const AdminRoute = require("./routes/admin_routes")
@@ -16,6 +25,7 @@ app.use(cors())
 app.use('/api/v1/post', PostsRoute)
 app.use('/api/v1/images', ImagesRoute)
 app.use('/api/v1/admin', AdminRoute)
+
 
 const PORT = process.env.PORT
 
