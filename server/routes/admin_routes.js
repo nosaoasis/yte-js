@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const { adminRegister, secretKey, adminLogin } = require("../controllers/AdminController");
-const {adminUserAuthenticateMiddleware, authLoginRegisterPage} = require("../middleware/authenticate")
+const { adminRegister, secretKey, adminLogin, authenticateRoute } = require("../controllers/AdminController");
+const {adminUserAuthenticateMiddleware, } = require("../middleware/authenticate")
 
 router.post("/secret",  secretKey);
-router.post("/register",adminUserAuthenticateMiddleware, adminRegister);
+router.post("/register", adminUserAuthenticateMiddleware, adminRegister);
 router.post("/login", adminLogin);
-router.get("/auth_login_register_page", authLoginRegisterPage)
+router.get("/authenticate_route/:token", authenticateRoute)
 
 module.exports = router;
