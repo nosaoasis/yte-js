@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import adminMenuList from "./admin-menu-list";
 import { DashboardGridMenu, defaultMenu } from "./AdminMenu";
 import yteSix from "../../images/yte_six.jpg";
@@ -15,6 +15,8 @@ const AdminHome = () => {
     dailyThoughts: 6,
     dailyQuotes: 7,
   });
+
+  const navigate = useNavigate()
 
   const getContentCount = (contentCountState) => {
     const contentDiv = Object.entries(contentCountState).map(
@@ -37,11 +39,18 @@ const AdminHome = () => {
   const contentCountList = getContentCount(contentCount);
 
   useEffect(() => {
-    axios.get(`http://localhost:3764/api/v1/admin/authenticate_route`)
-    .then((res) => {
-      console.log("res value is ",res)
-    }).catch(err => console.log(err))
+    const token = localStorage.getItem("token")
+    if (!token) {
+      navigate("/admin", { replace: true });
+      return
+    }
   }, [])
+  // useEffect(() => {
+  //   axios.get(`http://localhost:3764/api/v1/admin/authenticate_route`)
+  //   .then((res) => {
+  //     console.log("res value is ",res)
+  //   }).catch(err => console.log(err))
+  // }, [])
 
   return (
     <>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import yteOne from "../../images/yte_one.jpg";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loading, BlogTableList } from "./";
 import adminMenuList from "./admin-menu-list";
@@ -9,6 +9,7 @@ import Pagination from "../helper-components/Pagination";
 
 function AdminPost() {
   const adminPostLocation = useLocation();
+  const navigate = useNavigate()
 
   const [input, setInput] = useState({
     searchPost: "",
@@ -102,6 +103,14 @@ function AdminPost() {
       setSearchPage(null);
     }
   }, [input.searchPost.length]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      navigate("/admin", { replace: true });
+      return
+    }
+  }, [])
 
   const delPost = (id, page) => {
     const token = localStorage.getItem("token");

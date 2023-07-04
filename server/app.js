@@ -13,6 +13,9 @@ app.use(cookieSession({
   keys: ["key1", "key2"]
 }))
 
+// authenticate
+const {adminUserAuthenticateMiddleware} = require("./middleware/authenticate")
+
 // routes
 const PostsRoute = require("./routes/post_routes")
 const ImagesRoute = require("./routes/images_routes")

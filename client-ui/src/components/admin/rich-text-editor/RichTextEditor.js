@@ -22,6 +22,7 @@ const RichTextEditor = () => {
   const [selectedImage, setSelectedImage] = useState();
   const [imageEdit, setImageEdit] = useState(""); // coming from the edit button click
   const [showPreviewPost, setShowPreviewPost] = useState(false);
+  // const [showImageResize, setShowImageResize] = useState(false)
 
   const updateContent = (e) => {
     const postContent = e.target.innerHTML;

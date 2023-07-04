@@ -61,6 +61,14 @@ const SinglePost = (props) => {
       .catch((err) => console.error("an error occured.... ", err));
   }, [post_id]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      navigate("/admin", { replace: true });
+      return
+    }
+  }, [])
+
   return (
     <>
       {loading && <Loading message="Loading Blog" />}

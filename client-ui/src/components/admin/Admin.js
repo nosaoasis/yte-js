@@ -18,7 +18,7 @@ const Admin = () => {
         <Route index path="" element={<AdminSecretKey />} />
         <Route index path="/register" element={<AdminRegister />} />
         <Route index path="/login" element={<AdminLogin />} />
-        <Route path="dashboard" element={<AdminHome />} />
+        <Route path="/dashboard" element={<AdminHome />} />
         <Route path="/posts" element={<AdminPost />} />
         <Route path="/create_post" element={<RichTextEditor />} />
         <Route path="/post/edit/:post_id" element={<RichTextEditor />} />

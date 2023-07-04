@@ -1,11 +1,23 @@
+import { useEffect } from "react";
 import { createMarkup } from "../../../helpers/posts";
+import { useNavigate } from "react-router-dom";
 
 const PreviewPost = (props) => {
   const { customEditorContent, setShowPreviewPost, postTitle, previewImage } = props;
 
+  const navigate = useNavigate()
+
   const handleClosePreview = () => {
     setShowPreviewPost(false);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      navigate("/admin", { replace: true });
+      return
+    }
+  }, [])
 
   return (
     <>
