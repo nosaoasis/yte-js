@@ -8,12 +8,14 @@ const {
   publishUnpublishPost,
   searchPost, 
   deletePost,
-  updatePost
+  updatePost,
+  getAllPostsClientSide
 } = require("../controllers/PostController");
 const {adminUserAuthenticateMiddleware} = require("../middleware/authenticate")
 
 // all routes here will need authentication
 
+router.get("/client/all_posts", getAllPostsClientSide)
 router.get("/:page", getAllPosts);
 router.post("/create", createPost);
 router.get("/get_single_post/:post_id", getSinglePost);

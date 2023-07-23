@@ -12,7 +12,7 @@ ReactDOM.render(
   // <React.StrictMode>
     <Router>
       <Routes>
-        <Route index path="/" element={<App />} />
+        <Route index path="/*" element={<App />} />
         <Route path="admin/*" element={<Admin />} />
       </Routes>
     </Router>,

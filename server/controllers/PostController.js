@@ -10,19 +10,19 @@ const createPost = async (req, res) => {
 const getAllPosts = async (req, res) => {
   try {
     let query = Posts.find();
-
+    
     const page = parseInt(req.params.page !== null ? req.params.page : 1);
     const pageLimit = 10;
     const skip = (page - 1) * pageLimit;
     const total = await Posts.countDocuments();
-
+    
     const pages = Math.ceil(total / pageLimit);
-
+    
     query = query.skip(skip).limit(pageLimit);
     if (page > pages) {
       return res.status(404).json({ msg: "Failed" });
     }
-    const posts = await query;
+    const posts = await query.sort({$natural: -1});
 
     res
       .status(200)
@@ -31,6 +31,20 @@ const getAllPosts = async (req, res) => {
     res.status(404).json({ msg: "Failed" });
   }
 };
+
+const getAllPostsClientSide = async (req, res) => {
+  console.log(123)
+  try {
+    console.log(123)
+    const allClientSidePosts = await Posts.find({})
+    console.log("all posts value is ", allClientSidePosts)
+    res
+      .status(200)
+      .json({ msg: "Success", posts: allClientSidePosts, nbHits: allClientSidePosts.length});
+  } catch (error) {
+    res.status(404).json({ msg: "Failed" });
+  }
+}
 
 const getSinglePost = async (req, res) => {
   const { post_id } = req.params;
@@ -92,5 +106,6 @@ module.exports = {
   publishUnpublishPost,
   searchPost,
   deletePost,
-  updatePost
+  updatePost,
+  getAllPostsClientSide
 };

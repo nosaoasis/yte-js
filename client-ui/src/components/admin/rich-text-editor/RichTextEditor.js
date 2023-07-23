@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import adminMenuList from "../admin-menu-list";
 import { defaultMenu } from "../AdminMenu";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Loading } from "../";
 import axios from "axios";
 import { PreviewPostModal, ConfirmPublishModal } from "../modal";
 import Compressor from "compressorjs";
+import Resizer from "react-image-file-resizer";
 
 const RichTextEditor = () => {
   const params = useParams();
+  const navigate = useNavigate()
   const { post_id } = params;
 
   const [postId, setPostId] = useState(post_id || false);
@@ -51,7 +53,7 @@ const RichTextEditor = () => {
           .then((resp) => {
             <Loading message="Your post has been sent. You will be redirected soon" />;
             setTimeout(() => {
-              window.location.reload(true);
+              navigate("/admin/posts", { replace: true });
             }, 3000);
           })
           .catch((err) => {
@@ -68,6 +70,7 @@ const RichTextEditor = () => {
 
   const handleCompression = (e) => {
     const image = e.target.files[0];
+
     if (image && image.type.substr(0, 5) === "image") {
       setSelectedImage(image);
     } else {
@@ -95,9 +98,11 @@ const RichTextEditor = () => {
       await axios
         .post(`http://localhost:3764/api/v1/images/post`, formData)
         .then((res) => {
-          payload = {...payload, imageLink: res.data.image}
+          payload = { ...payload, imageLink: res.data.image };
         })
-        .catch(err => console.log("An error occurred. Cloudinary send javascript", err))
+        .catch((err) =>
+          console.log("An error occurred. Cloudinary send javascript", err)
+        );
     }
 
     const token = localStorage.getItem("token");
@@ -157,15 +162,13 @@ const RichTextEditor = () => {
         <div className="pt-4 pl-2 bg-black bg-no-repeat bg-cover h-screen flex-1 border-gray-600 border-2">
           <h2 className="text-3xl text-gray-100 font-bold ml-8">Posts</h2>
 
-          
           <button className="capitalize p-2 px-4 mt-4 ml-8 bg-slate-700 text-white">
             <Link to="/admin/posts">All Posts</Link>
           </button>
 
-
           <div className="mb-4 flex justify-between mx-8">
             <span className="capitalize mt-4 font-semibold text-xl bg-none text-white">
-              New Post
+              {imageEdit.length < 1 ? "New Post" : "Edit Post"}
             </span>
             <div className="">
               {postId ? (

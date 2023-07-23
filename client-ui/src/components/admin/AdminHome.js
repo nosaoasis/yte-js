@@ -62,7 +62,7 @@ const AdminHome = () => {
         {/* menu end */}
 
         <div
-          className="pt-4 pl-2 bg-no-repeat bg-cover h-screen flex-1"
+          className="pt-4 pl-2 bg-no-repeat bg-cover min-h-screen flex-1"
           style={{ backgroundImage: `url(${yteSix})` }}
         >
           <h2 className="text-3xl text-white font-bold ml-8">
@@ -73,7 +73,7 @@ const AdminHome = () => {
             {contentCountList}
           </div>
 
-          <button className="capitalize p-2 px-4 mt-4 ml-8 bg-slate-700 text-white">
+          <button className="capitalize p-2 px-4 mt-4 ml-8 bg-slate-700 text-white hover:bg-slate-900">
             <Link to="/admin/create_post">create new post</Link>
           </button>
 

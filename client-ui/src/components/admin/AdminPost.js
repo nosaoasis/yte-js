@@ -138,7 +138,7 @@ function AdminPost() {
         </div>
         {/* menu end */}
         <div
-          className="pt-4 pl-2 bg-no-repeat bg-cover h-screen flex-1 border-gray-600 border-2"
+          className="pt-4 pl-2 bg-no-repeat bg-cover min-h-screen flex-1 border-gray-600 border-2"
           style={{ backgroundImage: `url(${yteOne})` }}
         >
           <h2 className="text-3xl text-gray-100 font-bold ml-8">Posts</h2>
@@ -226,7 +226,7 @@ function AdminPost() {
                   )}
                 </div>
               </div>
-              <div className="flex items-center justify-center mt-4">
+              <div className="flex items-center justify-center mt-4 pb-3">
                 {searchPage == null ? (
                   <Pagination page={page} pages={pages} setPage={setPage} />
                 ) : (

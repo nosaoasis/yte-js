@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { Loading } from "./index";
 import adminMenuList from "./admin-menu-list";
 import { defaultMenu } from "./AdminMenu";
-import { publishPost, unpublishPost } from "../../helpers/posts";
+import { publishPost, unpublishPost, createMarkup } from "../../helpers/posts";
 
 const SinglePost = (props) => {
   const params = useParams();
@@ -62,12 +62,12 @@ const SinglePost = (props) => {
   }, [post_id]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (!token) {
       navigate("/admin", { replace: true });
-      return
+      return;
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -108,12 +108,12 @@ const SinglePost = (props) => {
                       Edit
                     </button>
                   </Link>
-                  <button
+                  {/* <button
                     className="capitalize p-2 px-4 mt-8 bg-red-700 text-white"
                     onClick={deletePost}
                   >
                     Delete
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <div className="flex py-10 mb-8">
@@ -136,9 +136,12 @@ const SinglePost = (props) => {
                   </p>
                 </div>
               </div>
-              <p className="text-green-700">
-                post_body value is {postDetails.post_body}
-              </p>
+              <div
+                className="text-green-700 break-all"
+                dangerouslySetInnerHTML={createMarkup(postDetails.post_body)}
+              >
+                {/* {postDetails.post_body} */}
+              </div>
             </div>
           </div>
         </>

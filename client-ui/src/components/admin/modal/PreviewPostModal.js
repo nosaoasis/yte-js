@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const PreviewPost = (props) => {
   const { customEditorContent, setShowPreviewPost, postTitle, previewImage } = props;
+  console.log("props value is ", props)
 
   const navigate = useNavigate()
 
@@ -24,7 +25,8 @@ const PreviewPost = (props) => {
       <div className="absolute p-4 top-0  w-10/12 h-full bg-black">
         <div className="relative">
           <img
-            className="mx-auto h-64 w-auto"
+            // className="mx-auto h-56 w-auto"
+            // className="mx-auto preview_modal_img"
             src={previewImage}
             alt="img"
           />
@@ -36,7 +38,7 @@ const PreviewPost = (props) => {
         <div className="mt-4">
           <h1 className="text-gray-100 capitalize font-bold text-xl">{postTitle}</h1>
           <div
-            className="post_content mt-4 text-black bg-white p-2 overflow-y-scroll h-72"
+            className="post_content mt-4 text-black bg-white p-2 overflow-y-scroll h-56"
             dangerouslySetInnerHTML={createMarkup(customEditorContent)}
           ></div>
         </div>

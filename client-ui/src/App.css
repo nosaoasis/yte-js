@@ -137,9 +137,9 @@ input[type="color"]::-moz-color-swatch {
 #text-input {
   margin-top: 10px;
   border: 1px solid #ddd;
-  padding: 20px;
-  min-height: 20rem;
-  max-height: 20rem;
+  padding: 10px;
+  min-height: 15rem;
+  max-height: 15rem;
   overflow: auto;
 }
 
@@ -169,4 +169,9 @@ input[type="color"]::-moz-color-swatch {
 
 .vertical_scroll {
   overflow-y: auto;
+}
+
+.preview_modal_img {
+  height: 300px;
+  width: 700px;
 }

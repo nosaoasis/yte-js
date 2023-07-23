@@ -7,6 +7,7 @@ const adminUserAuthenticateMiddleware = async (req, res, next) => {
   console.log("bbb");
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    console.log("auth error", 123)
     console.log("Auth header error");
     res.status(401).json({ msg: "Error", response: "Unauthorized" });
     return;
