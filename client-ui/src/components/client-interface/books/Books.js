@@ -1,10 +1,13 @@
 import React from "react";
+import NavMenu from "../nav/NavMenu";
 
 const Books = () => {
   return (
-    <>this is the books page...</>
-  )
-}
+    <>
+      <NavMenu /> 
+      this is the books page...
+    </>
+  );
+};
 
-
-export default Books
+export default Books;

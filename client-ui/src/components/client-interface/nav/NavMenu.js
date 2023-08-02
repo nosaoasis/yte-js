@@ -1,21 +1,15 @@
 import React from "react";
 import NavLinks from "./NavLinks";
+import { useParams } from "react-router-dom";
 
 const NavMenu = () => {
-  // return (
-  //   <>
-  //     <ul className="">
-  //       <NavLinks />
-  //     </ul>
-  //     <p className="text-white font-bold text-xs absolute bottom-2 left-5">© YteAngel {new Date().getFullYear()}</p>
-  //   </>
-  // );
+  const params = useParams()
 
   const menuList = () => {
     return (
       <>
-      <ul className="">
-        <NavLinks />
+      <ul className="mx-2">
+        <NavLinks activeMenu={params} />
       </ul>
       <p className="text-white font-bold text-xs absolute bottom-2 left-5">© YteAngel {new Date().getFullYear()}</p>
     </>

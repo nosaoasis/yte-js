@@ -24,6 +24,7 @@ const AdminRoute = require("./routes/admin_routes")
 // client side
 const ClientRoute = require("./routes/client_routes")
 const ClientBlogRoute = require("./routes/blog_routes")
+const ClientPostComment = require("./routes/comment_route")
 
 
 app.use(express.json({}))
@@ -36,6 +37,7 @@ app.use('/api/v1/admin', AdminRoute)
 // client side
 app.use('/api/v1/client', ClientRoute)
 app.use("/blog", ClientBlogRoute)
+app.use('/api/v1/comments', ClientPostComment)
 
 
 const PORT = process.env.PORT

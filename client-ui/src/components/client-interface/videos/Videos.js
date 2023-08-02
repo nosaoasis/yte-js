@@ -1,7 +1,8 @@
 import React from "react";
+import NavMenu from "../nav/NavMenu";
 
 const Videos = () => {
-  return <>this is the video page</>;
+  return <><NavMenu /> this is the video page</>;
 };
 
 export default Videos;

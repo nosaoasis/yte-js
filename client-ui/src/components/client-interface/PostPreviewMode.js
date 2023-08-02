@@ -1,34 +1,10 @@
 import React from "react";
-// import postsImg from "../../images/meditation.jpg"
-import DOMPurify from "dompurify";
 import { Link } from "react-router-dom";
 import { createMarkup } from "../../helpers/posts";
-// import axios from 'axios';
 
 const PostPreviewMode = (props) => {
   const { _id, title, post_body, imageLink } = props.post;
   console.log("props value is ", typeof(post_body));
-
-  // const theObj = {__html : post_body}
-
-  // const navigate = useNavigate()
-
-  // const createMarkup = (html) => {
-  //   const parser = new DOMParser();
-  //   const doc = parser.parseFromString(html, 'text/html');
-  //   return doc.documentElement.textContent;
-  //   // return {
-  //   //   __html: DOMPurify.sanitize(html),
-  //   // };
-  // };
-
-  // const handleGetSingleBlog = () => {
-  //   axios.get(`http://localhost:3764/blog/${_id}`)
-  //   .then(resp => {
-  //     console.log("response from single blog post request is", resp)
-  //     navigate("/")
-  //   }).catch(err => console.log("An error occured...."))
-  // }
 
   return (
     <>
