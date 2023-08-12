@@ -2,7 +2,7 @@ import React from "react";
 import BlogPostComments from "./BlogPostComments";
 
 const BlogComments = (props) => {
-  const { title, blog_id } = props;
+  const { title, blog_id, blogComments } = props;
 
   return (
     <>
@@ -12,7 +12,7 @@ const BlogComments = (props) => {
             <span className="text-blue-400">Comments on</span> {title}
           </p>
           <div className="overflow-auto max-h-96 p-3 text-gray-200">
-            <BlogPostComments blog_id={blog_id} />
+            <BlogPostComments blog_id={blog_id} blogComments={blogComments} />
           </div>
         </div>
       </div>

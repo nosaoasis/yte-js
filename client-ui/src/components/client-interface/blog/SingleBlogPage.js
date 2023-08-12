@@ -23,6 +23,8 @@ const SingleBlogPage = (props) => {
   const [email, setEmail] = useState("");
   const [textArea, setTextArea] = useState("");
 
+  const [blogComments, setBlogComments] = useState(null);
+
   // const createMarkup = (html) => {
   //   return {
   //     __html: DOMPurify.sanitize(html),
@@ -37,6 +39,19 @@ const SingleBlogPage = (props) => {
       })
       .catch((err) => console.log("An error occured...."));
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3764/api/v1/comments/post_comments/${blog_id}`)
+      .then((res) => {
+        console.log("the data for the comment is", res.data.postComment);
+        const commentList = res.data.postComment
+        setBlogComments(commentList);
+        // renderComments(blogComments);
+        console.log("blog post list value is ", blogComments)
+      })
+      .catch((err) => console.log("An error has occured", err));
+  }, [showComments]);
 
   const handleShowBlogComment = () => {
     setShowComments(!showComments);
@@ -55,7 +70,10 @@ const SingleBlogPage = (props) => {
       .post(`http://localhost:3764/api/v1/comments/post_comment`, {
         payload,
       })
-      .then((res) => console.log("the value from the comment post is", res))
+      .then((res) => {
+        console.log("the value from the comment post is", res)
+        setShowComments(!showComments)
+      })
       .catch((err) =>
         console.log(
           "An error occured in an attempt to post a comment about the blog",err
@@ -81,6 +99,7 @@ const SingleBlogPage = (props) => {
                     <BlogComments
                       title={singlePostData.title}
                       blog_id={blog_id}
+                      blogComments={blogComments}
                     />
                   </div>
                 </div>
@@ -162,7 +181,7 @@ const SingleBlogPage = (props) => {
             </div>
           </div>
           <div className="w-4/12 bg-red-500 p-2">
-            this is the single blog page
+            section under design
           </div>
         </div>
       </div>

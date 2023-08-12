@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import PostPreviewMode from "./PostPreviewMode";
 import NavMenu from "./nav/NavMenu";
+import { Link } from "react-router-dom";
 
 const ClientHomePage = () => {
   const [state, setState] = useState({
@@ -39,14 +40,31 @@ const ClientHomePage = () => {
         <div className="w-10/12 bg-gray-300 min-h-screen p-3">
           {/* blog section */}
           <div className="px-3">
-            <p className="text-2xl ml-2">Yte Blogs</p>
+            <p className="text-2xl ml-2">Ytes' Blogs </p>
             <div className="grid grid-cols-client-home">
               {publishedPostList}
             </div>
+            <Link to="/blog">
+              <button className="text-white w-full bg-gray-900 focus:outline-none focus:ring-1 focus:ring-white font-medium font-bold py-2 mt-2">
+                See all Blog Posts
+              </button>
+            </Link>
           </div>
           <hr />
           {/* pictures section */}
-          <div>pictures section</div>
+          <div>
+            <div className="px-3 mt-4">
+              <p className="text-2xl ml-2">Ytes' Pictures </p>
+              <div className="grid grid-cols-client-home">
+                this will have the list of images...
+              </div>
+              <Link to="/pictures">
+                <button className="text-white w-full bg-gray-900 focus:outline-none focus:ring-1 focus:ring-white font-medium font-bold py-2 mt-2">
+                  See all YteAngel's Pictures
+                </button>
+              </Link>
+            </div>
+          </div>
           <hr />
           {/* video section */}
           <div>video section</div>

@@ -15,7 +15,7 @@ const getSinglePostComments = async (req, res) => {
   const {blogId} = req.params
   console.log("req params value is", blogId)
   try {
-    const postComment = await Comment.find({blogId, commentOn: "blog"})
+    const postComment = await Comment.find({blogId, commentOn: "blog"}).sort({$natural: -1});
     res.status(200).json({ postComment });
   } catch (error) {
     res.status(404).json({ msg: "Failed" });

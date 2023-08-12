@@ -1,55 +1,33 @@
-import React, {useEffect} from "react"
-import axios from "axios"
+import React, { useEffect, useState } from "react";
+// import axios from "axios";
 
 const BlogPostComments = (props) => {
-  const {blog_id} = props
+  const { blogComments } = props;
+  // const [commentList, setCommentList] = useState(blogComments);
+  
+  const imgAddr = "https://cdn-icons-png.flaticon.com/512/6915/6915987.png";
 
+  const renderPosts = () => {
+    return blogComments.map(comment => {
+      return (
+        <>
+          <div className="flex mt-3 border-2 border-r-2 border-gray-400 px-2 py-3 rounded-lg">
+            <img className="h-8 w-8 mr-3" src={imgAddr} alt={comment.firstname} />
+            <p className="text-sm">{comment.comment} ;adfjn dfjkn d;jkd v;okds sd;ok sdkondv s[diojoijsd siodj ] sodijdjndssdn sodinoksdnoisdn</p> 
+          </div>
+        </>
+      )
+    })
+  }
 
-  useEffect(() => {
-    axios.get(`http://localhost:3764/api/v1/comments/post_comments/${blog_id}`)
-    .then(res => console.log("the data for the comment is", res))
-    .catch(err => console.log("An error has occured", err))
-  })
 
   return (
     <>
-      <p className="mt-10">
-            <span className="font-bold">Yte Angel</span> - fetch the comments for the post ;lkfn d;fm ;odfv d;fvom v;sdo
-            oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;fetch the comments for the post ;lkfn d;fm ;odfv d;fvom v;sdo
-            oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofnfetch the comments for the post ;lkfn d;fm ;odfv d;fvom
-            v;sdo oisdvkfdv piofv e;or e;foi ifhf ;ewoifhfeijfom iojewf ;oeifj
-            ef;wfoihweofn
-          </p>
+      <div className="mt-10">
+        {renderPosts()}
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default BlogPostComments
+export default BlogPostComments;
