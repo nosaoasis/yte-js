@@ -6,7 +6,8 @@ import {
   AdminSinglePostPreview,
   AdminRegister,
   AdminLogin
-} from "./index";
+} from "./postpages/index";
+import { ImageHome } from "./imagepages";
 import RichTextEditor from "./rich-text-editor/RichTextEditor";
 import { Routes, Route } from "react-router-dom";
 
@@ -23,6 +24,7 @@ const Admin = () => {
         <Route path="/create_post" element={<RichTextEditor />} />
         <Route path="/post/edit/:post_id" element={<RichTextEditor />} />
         <Route exact path="/posts/:post_id" element={<AdminSinglePostPreview />} />
+        <Route path="/images" element={<ImageHome />} />
       </Routes>
     </>
   );

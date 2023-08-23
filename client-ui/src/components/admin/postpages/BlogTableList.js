@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { publishPost, unpublishPost, createMarkup } from "../../helpers/posts";
+import { publishPost, unpublishPost, createMarkup } from "../../../helpers/posts";
 
 const BlogTableList = (props) => {
   const { _id, title, post_body, published, createdAt } = props.post;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import { Loading } from "./index";
+import { useNavigate, Link } from "react-router-dom";
+import { Loading } from "../postpages";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -76,7 +76,6 @@ const AdminLogin = () => {
         })
         .catch((err) => {
           const errObj = Object.values(err)[2];
-          console.log("error object", errObj[2]);
           if (
             errObj.status === 500 &&
             errObj.statusText === "Internal Server Error"

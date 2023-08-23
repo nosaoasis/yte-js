@@ -44,11 +44,8 @@ const SingleBlogPage = (props) => {
     axios
       .get(`http://localhost:3764/api/v1/comments/post_comments/${blog_id}`)
       .then((res) => {
-        console.log("the data for the comment is", res.data.postComment);
-        const commentList = res.data.postComment
+        const commentList = res.data.postComment;
         setBlogComments(commentList);
-        // renderComments(blogComments);
-        console.log("blog post list value is ", blogComments)
       })
       .catch((err) => console.log("An error has occured", err));
   }, [showComments]);
@@ -58,27 +55,37 @@ const SingleBlogPage = (props) => {
   };
 
   const handleSubmitPostComment = () => {
-    console.log(firstName, lastName, email, textArea);
     const payload = {
       blogId: blog_id,
       firstname: firstName,
       lastname: lastName,
       email,
       comment: textArea,
+      commentOn: "blog",
     };
     axios
       .post(`http://localhost:3764/api/v1/comments/post_comment`, {
         payload,
       })
       .then((res) => {
-        console.log("the value from the comment post is", res)
-        setShowComments(!showComments)
+        setShowComments("");
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setTextArea("");
+        setShowComments(!showComments);
       })
-      .catch((err) =>
+      .catch((err) => {
+        setShowComments("");
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setTextArea("");
         console.log(
-          "An error occured in an attempt to post a comment about the blog",err
-        )
-      );
+          "An error occured in an attempt to post a comment about the blog",
+          err
+        );
+      });
   };
 
   return (
@@ -180,9 +187,7 @@ const SingleBlogPage = (props) => {
               </div>
             </div>
           </div>
-          <div className="w-4/12 bg-red-500 p-2">
-            section under design
-          </div>
+          <div className="w-4/12 bg-red-500 p-2">section under design</div>
         </div>
       </div>
     </>

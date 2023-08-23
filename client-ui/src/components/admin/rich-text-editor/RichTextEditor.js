@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import adminMenuList from "../admin-menu-list";
 import { defaultMenu } from "../AdminMenu";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { Loading } from "../";
+import { Loading } from "../postpages";
 import axios from "axios";
 import { PreviewPostModal, ConfirmPublishModal } from "../modal";
 import Compressor from "compressorjs";

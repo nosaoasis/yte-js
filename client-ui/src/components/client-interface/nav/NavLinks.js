@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Blog from "../blog/Blog";
-import Peoms from "../peoms/Peoms";
+import Poems from "../poems/Poems";
 import Pictures from "../pictures/Pictures";
 import Videos from "../videos/Videos";
 import Books from "../books/Books";
@@ -39,9 +39,9 @@ const NavLinks = (props) => {
       activeMenu : "videos" === useParams()["*"].split("/")[0]
     },
     {
-      component: { Peoms },
-      page_name: "Peoms",
-      to_path: "/peoms",
+      component: { Poems },
+      page_name: "Poems",
+      to_path: "/poems",
       fa_icon: "fa fa-list fa-1x",
       activeMenu : "poems" === useParams()["*"].split("/")[0]
     },

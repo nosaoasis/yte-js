@@ -3,7 +3,7 @@ import "./App.css";
 import ClientHomePage from "./components/client-interface/ClientHomePage";
 import Blog from "./components/client-interface/blog/Blog";
 import SingleBlogPage from "./components/client-interface/blog/SingleBlogPage";
-import Peoms from "./components/client-interface/peoms/Peoms";
+import Poems from "./components/client-interface/poems/Poems";
 import Pictures from "./components/client-interface/pictures/Pictures";
 import Videos from "./components/client-interface/videos/Videos";
 import Books from "./components/client-interface/books/Books";
@@ -19,7 +19,7 @@ function App() {
         <Route exact path="/blog/:blog_id" element={<SingleBlogPage />} />
         <Route path="pictures" element={<Pictures />} />
         <Route path="videos" element={<Videos />} />
-        <Route path="peoms" element={<Peoms />} />
+        <Route path="poems" element={<Poems />} />
         <Route path="books" element={<Books />} />
         <Route path="daily-thoughts" element={<DailyThoughts />} />
       </Routes>

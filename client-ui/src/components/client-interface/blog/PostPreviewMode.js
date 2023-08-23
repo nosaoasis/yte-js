@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { createMarkup } from "../../helpers/posts";
+import { createMarkup } from "../../../helpers/posts";
 
 const PostPreviewMode = (props) => {
   const { _id, title, post_body, imageLink } = props.post;
-  console.log("props value is ", typeof(post_body));
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import PostPreviewMode from "./PostPreviewMode";
+import PostPreviewMode from "./blog/PostPreviewMode";
 import NavMenu from "./nav/NavMenu";
 import { Link } from "react-router-dom";
 

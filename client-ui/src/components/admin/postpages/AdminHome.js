@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import adminMenuList from "./admin-menu-list";
-import { DashboardGridMenu, defaultMenu } from "./AdminMenu";
-import yteSix from "../../images/yte_six.jpg";
-import axios from "axios";
+import adminMenuList from "../admin-menu-list";
+import { DashboardGridMenu, defaultMenu } from "../AdminMenu";
+import yteSix from "../../../images/yte_six.jpg"
 
 const AdminHome = () => {
   const [contentCount, setContentCount] = useState({
@@ -23,7 +22,7 @@ const AdminHome = () => {
       ([key, value], index) => {
         return (
           <div
-            className="border border-2 p-2 px-6 rounded-md capitalize font-bold text-white bg-gray-600"
+            className="border-2 p-2 px-6 rounded-md capitalize font-bold text-white bg-gray-600"
             key={index}
           >
             <p>
@@ -45,12 +44,6 @@ const AdminHome = () => {
       return
     }
   }, [])
-  // useEffect(() => {
-  //   axios.get(`http://localhost:3764/api/v1/admin/authenticate_route`)
-  //   .then((res) => {
-  //     console.log("res value is ",res)
-  //   }).catch(err => console.log(err))
-  // }, [])
 
   return (
     <>

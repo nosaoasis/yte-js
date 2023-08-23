@@ -2,9 +2,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Loading } from "./index";
-import adminMenuList from "./admin-menu-list";
-import { defaultMenu } from "./AdminMenu";
-import { publishPost, unpublishPost, createMarkup } from "../../helpers/posts";
+import adminMenuList from "../admin-menu-list";
+import { defaultMenu } from "../AdminMenu";
+import { publishPost, unpublishPost, createMarkup } from "../../../helpers/posts";
 
 const SinglePost = (props) => {
   const params = useParams();

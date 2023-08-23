@@ -77,9 +77,9 @@ const deletePost = async (req, res) => {
   const {post_id} = req.body
   const post = await Posts.findByIdAndRemove({_id : post_id})
   if (!post) {
-    return res.status(500).json({ msg: "Error updating post" })
+    return res.status(500).json({ msg: "Error deleting post" })
   }
-  return res.status(200).json({ msg: "Successfully updated post" });
+  return res.status(200).json({ msg: "Successfully deleted post" });
 }
 
 const updatePost = async (req, res) => {

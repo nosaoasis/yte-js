@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import yteOne from "../../images/yte_one.jpg";
+import yteOne from "../../../images/yte_one.jpg";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Loading, BlogTableList } from "./";
-import adminMenuList from "./admin-menu-list";
-import { defaultMenu } from "./AdminMenu";
-import Pagination from "../helper-components/Pagination";
+import { Loading, BlogTableList } from ".";
+import adminMenuList from "../admin-menu-list";
+import { defaultMenu } from "../AdminMenu";
+import Pagination from "../../helper-components/Pagination";
 
 function AdminPost() {
   const adminPostLocation = useLocation();

@@ -4,13 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 const PreviewPost = (props) => {
   const { customEditorContent, setShowPreviewPost, postTitle, previewImage } = props;
-  console.log("props value is ", props)
 
   const navigate = useNavigate()
 
-  const handleClosePreview = () => {
-    setShowPreviewPost(false);
-  };
+  const handleClosePreview = () => setShowPreviewPost(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -25,8 +22,6 @@ const PreviewPost = (props) => {
       <div className="absolute p-4 top-0  w-10/12 h-full bg-black">
         <div className="relative">
           <img
-            // className="mx-auto h-56 w-auto"
-            // className="mx-auto preview_modal_img"
             src={previewImage}
             alt="img"
           />

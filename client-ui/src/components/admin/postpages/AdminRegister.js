@@ -116,7 +116,6 @@ const AdminRegister = () => {
         })
         .catch((err) => {
           const errObj = Object.values(err)[2];
-          console.log("error object", errObj[2]);
           if (
             errObj.status === 500 &&
             errObj.statusText === "Internal Server Error"

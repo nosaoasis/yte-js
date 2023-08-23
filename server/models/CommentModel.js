@@ -7,7 +7,8 @@ const CommentSchema = new mongoose.Schema({
   },
   commentOn: {
     type: String,
-    default: "blog"
+    default: "blog",
+    require: [true, "Please add comment destination"]
   },
   firstname: {
     type: String,
