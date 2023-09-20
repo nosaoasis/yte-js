@@ -1,9 +1,7 @@
 const Comment = require("../models/CommentModel");
 
 const addCommentToPost = async (req, res) => {
-  console.log("aaaa", req.body.payload);
   try {
-    console.log("ddddd");
     const postComment = await Comment.create(req.body.payload);
     res.status(200).json({ postComment });
   } catch (err) {
@@ -13,7 +11,6 @@ const addCommentToPost = async (req, res) => {
 
 const getSinglePostComments = async (req, res) => {
   const {blogId} = req.params
-  console.log("req params value is", blogId)
   try {
     const postComment = await Comment.find({blogId, commentOn: "blog"}).sort({$natural: -1});
     res.status(200).json({ postComment });

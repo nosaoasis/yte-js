@@ -25,12 +25,6 @@ const SingleBlogPage = (props) => {
 
   const [blogComments, setBlogComments] = useState(null);
 
-  // const createMarkup = (html) => {
-  //   return {
-  //     __html: DOMPurify.sanitize(html),
-  //   };
-  // };
-
   useEffect(() => {
     axios
       .get(`http://localhost:3764/blog/${blog_id}`)

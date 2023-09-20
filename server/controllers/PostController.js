@@ -1,5 +1,4 @@
 const Posts = require("../models/PostModel");
-const { post } = require("../routes/admin_routes");
 
 const createPost = async (req, res) => {
   const post = await Posts.create(req.body);
@@ -33,11 +32,8 @@ const getAllPosts = async (req, res) => {
 };
 
 const getAllPostsClientSide = async (req, res) => {
-  console.log(123)
   try {
-    console.log(123)
     const allClientSidePosts = await Posts.find({})
-    console.log("all posts value is ", allClientSidePosts)
     res
       .status(200)
       .json({ msg: "Success", posts: allClientSidePosts, nbHits: allClientSidePosts.length});

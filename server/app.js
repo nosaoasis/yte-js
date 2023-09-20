@@ -29,6 +29,7 @@ const AdminRoute = require("./routes/admin_routes");
 const ClientRoute = require("./routes/client_routes");
 const ClientBlogRoute = require("./routes/blog_routes");
 const ClientPostComment = require("./routes/comment_route");
+const QuotePostComment = require("./routes/quote_routes");
 
 app.use(express.json({}));
 app.use(cors());
@@ -37,6 +38,7 @@ app.use("/api/v1/post", PostsRoute);
 app.use("/api/v1/images", ImagesRoute);
 app.use("/api/v1/admin", AdminRoute);
 app.use("/api/v1/pictures", PicturesRoute);
+app.use("/api/v1/quotes", QuotePostComment);
 
 // client side
 app.use("/api/v1/client", ClientRoute);

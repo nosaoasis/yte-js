@@ -36,12 +36,6 @@ export default [
     "fa_icon" : "fas fa-book"
   },
   {
-    "id": 7,
-    "page_name" : "Daily Thoughts",
-    "to_link" : "thoughts",
-    "fa_icon" : "far fa-comment-dots"
-  },
-  {
     "id": 8,
     "page_name" : "Quote of the day",
     "to_link" : "quotes",

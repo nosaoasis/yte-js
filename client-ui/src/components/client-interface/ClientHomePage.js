@@ -3,6 +3,7 @@ import axios from "axios";
 import PostPreviewMode from "./blog/PostPreviewMode";
 import NavMenu from "./nav/NavMenu";
 import { Link } from "react-router-dom";
+import Quotes from "./quotes/Quotes";
 
 const ClientHomePage = () => {
   const [state, setState] = useState({
@@ -13,7 +14,6 @@ const ClientHomePage = () => {
     axios
       .get(`http://localhost:3764/api/v1/client`)
       .then((resp) => {
-        console.log("response value is", resp);
         const filteredPost = resp.data.posts
           .filter((item) => item.published)
           .slice(0, 10);
@@ -34,6 +34,9 @@ const ClientHomePage = () => {
   return (
     <>
       <NavMenu />
+      <div className="fixed bottom-3 right-4">
+        <Quotes />
+      </div>
 
       <div className="flex">
         <div className="w-2/12 bg-black min-h-screen"></div>

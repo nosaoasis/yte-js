@@ -23,9 +23,6 @@ const postNewPicture = async (req, res) => {
 }
 
 const deleteImage = async (req, res) => {
-  // console.log("req params value is", req.params.image_id)
-  // res.status(202).json({msg: "deleted images successfully"})
-  // return res.status(500).json({ msg: "Error deleting image" })
   const {image_id} = req.params
   try {
     const delImage = await Pictures.findByIdAndRemove({_id : image_id})

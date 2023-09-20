@@ -1,11 +1,9 @@
 const Images = require("../models/ImageModel")
 
 const uploadBlogPostImage = async (req, res) => {
-  console.log("image path value is ", req.file.path)
   const imageUpload = new Images({
     image: req.file.path
   })
-  console.log("==================", imageUpload)
 
   try {
     await imageUpload.save()
